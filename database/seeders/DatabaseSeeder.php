@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -53,5 +54,10 @@ class DatabaseSeeder extends Seeder
         ];
 
         DB::table('tbl_video')->insert($dataVideo);
+        DB::table('tbl_users')->insert([
+            'email' => "admin@gmail.com",
+            'nama_lengkap' => "Admin",
+            'password' => Hash::make('admin'),
+        ]);
     }
 }

@@ -13,6 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// login
+Route::get('/','LoginController@index');
+Route::post('/auth','LoginController@auth');
+
+// dashboard
+Route::get('/beranda','DashboardController@index');
+
+// banner
+Route::get('/data-banner','DashboardController@getBanner');

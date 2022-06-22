@@ -94,5 +94,59 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('admin'),
             'role' => 1,
         ]);
+
+        $dataSiaran = [
+            [
+                'nama_siaran'   => "Religius",
+                'waktu_mulai'   => "08:00",
+                'waktu_selesai'  => "08:29",
+                'hari'          => "senin"
+            ],
+            [
+                'nama_siaran'   => "Religius",
+                'waktu_mulai'   => "08:00",
+                'waktu_selesai'  => "08:29",
+                'hari'          => "selasa"
+            ],
+            [
+                'nama_siaran'   => "Religius",
+                'waktu_mulai'   => "08:00",
+                'waktu_selesai'  => "08:29",
+                'hari'          => "rabu"
+            ],
+            [
+                'nama_siaran'   => "Religius",
+                'waktu_mulai'   => "08:00",
+                'waktu_selesai'  => "08:29",
+                'hari'          => "kamis"
+            ],
+            [
+                'nama_siaran'   => "Religius",
+                'waktu_mulai'   => "08:00",
+                'waktu_selesai'  => "08:29",
+                'hari'          => "jumat"
+            ],
+            [
+                'nama_siaran'   => "Religius",
+                'waktu_mulai'   => "08:00",
+                'waktu_selesai'  => "08:29",
+                'hari'          => "sabtu"
+            ],
+            [
+                'nama_siaran'   => "Religius",
+                'waktu_mulai'   => "08:00",
+                'waktu_selesai'  => "08:29",
+                'hari'          => "minggu"
+            ],
+            [
+                'nama_siaran'   => "Religius",
+                'waktu_mulai'   => "08:29",
+                'waktu_selesai'  => "08:56",
+                'hari'          => "senin"
+            ]
+
+        ];
+
+        DB::table('tbl_jadwal_siaran')->insert($dataSiaran);
     }
 }

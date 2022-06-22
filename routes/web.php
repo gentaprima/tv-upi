@@ -37,3 +37,22 @@ Route::get('/data-iklan/{id}','DashboardController@getIklan');
 Route::post('/add-ads','AdsController@store');
 Route::post('/update-ads/{id}','AdsController@update');
 Route::get('/delete-ads/{id}','AdsController@destroy');
+
+// berita & kategori
+Route::get('/data-kategori-berita','DashboardController@getKategoriBerita');
+Route::post('add-kategori-berita','KategoriBeritaController@store');
+Route::post('update-kategori-berita/{id}','KategoriBeritaController@update');
+Route::get('delete-kategori-berita/{id}','KategoriBeritaController@destroy');
+Route::get('/data-berita','DashboardController@getBerita');
+Route::post('/add-berita','BeritaController@store');
+Route::post('/update-berita/{id}','BeritaController@update');
+Route::post('/delete-berita/{id}','BeritaController@destroy');
+Route::get('/show-berita/{id}','BeritaController@show');
+
+// jadwal siaran
+Route::get('/jadwal-siaran','DashboardController@jadwalSiaran');
+Route::get('/ubah-siaran/{id}','DashboardController@ubahSiaran');
+Route::post('/add-jadwal-siaran','JadwalSiaranController@store');
+Route::post('/update-jadwal-siaran/{id}','JadwalSiaranController@update');
+Route::get('/delete-jadwal-siaran/{id}','JadwalSiaranController@destroy');
+Route::get('/jadwal-siaran-show/{id}','JadwalSiaranController@show');

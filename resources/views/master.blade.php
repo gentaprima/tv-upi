@@ -156,13 +156,29 @@ use Illuminate\Support\Facades\Session;
 
               </ul>
             </li>
-            <li class="nav-item">
-              <a href="/" class="nav-link">
+            <li class="nav-item {{ Request::is('data-berita')  || Request::is('data-kategori-berita') ? 'menu-open' : '' }}">
+              <a href="#" class="nav-link {{ Request::is('data-berita')  || Request::is('data-kategori-berita') ? 'active' : '' }}">
                 <i class="nav-icon fas fa-file"></i>
                 <p>
                   Berita
+                  <i class="fas fa-angle-left right"></i>
                 </p>
               </a>
+              <ul class="nav nav-treeview ">
+                <li class="nav-item">
+                  <a href="/data-berita" class="nav-link {{ Request::is('data-berita') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Data Berita</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/data-kategori-berita" class="nav-link {{ Request::is('data-kategori-berita') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Data Kategori Berita</p>
+                  </a>
+                </li>
+
+              </ul>
             </li>
             <li class="nav-item">
               <a href="/data-video" class="nav-link {{ Request::is('data-video') ? 'active' : '' }}">
@@ -173,7 +189,7 @@ use Illuminate\Support\Facades\Session;
               </a>
             </li>
             <li class="nav-item">
-              <a href="/" class="nav-link">
+              <a href="/jadwal-siaran" class="nav-link {{ Request::is('jadwal-siaran') ||  Request::is('ubah-siaran') ? 'active' : '' }}">
                 <i class="nav-icon fas fa-calendar"></i>
                 <p>
                   Jadwal Siaran
@@ -182,7 +198,7 @@ use Illuminate\Support\Facades\Session;
             </li>
 
 
-           
+
           </ul>
           </li>
 
@@ -303,6 +319,86 @@ use Illuminate\Support\Facades\Session;
         "responsive": true,
       });
     });
+  </script>
+  <script>
+    $('#waktuMulai').datetimepicker({
+      use24hours: true,
+      format: 'HH:mm::ss'
+    })
+    $('#waktuSelesai').datetimepicker({
+      use24hours: true,
+      format: 'HH:mm:ss'
+    })
+  </script>
+
+  <script>
+    function proccessAddJadwal() {
+      let hari = document.getElementById("hari").value;
+      let namaSiaran = document.getElementById("namaSiaran").value;
+      let waktuMulai = document.getElementById("startTime").value;
+      let waktuSelesai = document.getElementById("endTime").value;
+      let token = $("input[name='_token']").val();
+      $.ajax({
+        type: "POST",
+        url: '/add-jadwal-siaran',
+        data: {
+          hari: hari,
+          namaSiaran: namaSiaran,
+          waktuMulai: waktuMulai,
+          waktuSelesai: waktuSelesai,
+          _token: token
+        },
+        success: function(response) {
+          if (!response.status) {
+            Toast.fire({
+              icon: "error",
+              title: response.message
+            });
+          } else {
+            Toast.fire({
+              icon: "success",
+              title: response.message
+            });
+            $("#modal-form .close").click()
+            getDataJadwal();
+          }
+        }
+      })
+    }
+
+    function proccessUpdateJadwal(id) {
+      let hari = document.getElementById("hari").value;
+      let namaSiaran = document.getElementById("namaSiaran").value;
+      let waktuMulai = document.getElementById("startTime").value;
+      let waktuSelesai = document.getElementById("endTime").value;
+      let token = $("input[name='_token']").val();
+      $.ajax({
+        type: "POST",
+        url: `/update-jadwal-siaran/${id}`,
+        data: {
+          hari: hari,
+          namaSiaran: namaSiaran,
+          waktuMulai: waktuMulai,
+          waktuSelesai: waktuSelesai,
+          _token: token
+        },
+        success: function(response) {
+          if (!response.status) {
+            Toast.fire({
+              icon: "error",
+              title: response.message
+            });
+          } else {
+            Toast.fire({
+              icon: "success",
+              title: response.message
+            });
+            $("#modal-form .close").click()
+            getDataJadwal();
+          }
+        }
+      })
+    }
   </script>
 </body>
 

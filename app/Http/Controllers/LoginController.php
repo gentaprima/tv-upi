@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ModelUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
@@ -34,9 +35,18 @@ class LoginController extends Controller
                                 ->withInput($request->input());
         }
 
+        if($getData->role == 0){
+            Session::flash('message', 'Mohon maaf, anda tidak memiliki akses ke halaman ini.'); 
+            Session::flash('icon', 'error`');
+            return redirect()->back()
+                                ->withInput($request->input());
+        }
+
 
         Session::put('dataUsers',$getData);
         Session::put('login', true);
-        return redirect('/dashboard');
+        return redirect('/beranda');
     }
+
+ 
 }

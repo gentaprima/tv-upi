@@ -140,3 +140,16 @@ background-color: #f8bb86 !important;
         border: none;
         border-radius: 10px;
 }
+
+
+.form-control{
+    background-color: #e8e6e6 !important;
+    border: none !important;
+    border-radius: 10px !important;
+}
+
+.custom-file > label{
+    background-color: #e8e6e6 !important;
+    border: none !important;
+    border-radius: 10px !important;
+}

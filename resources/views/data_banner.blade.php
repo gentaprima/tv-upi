@@ -1,8 +1,8 @@
 @extends('master')
 
 @section('title-link','Beranda')
-@section('sub-title-link','Data Rekening ')
-@section('title','Data Rekening')
+@section('sub-title-link','Data Banner ')
+@section('title','Data Banner')
 
 @section('content')
 <!-- Content Wrapper. Contains page content -->
@@ -16,7 +16,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Beranda</a></li>
-                        <li class="breadcrumb-item active">Data Rekening</li>
+                        <li class="breadcrumb-item active">Data Banner</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -58,19 +58,33 @@
                         </tr>
                     </thead>
                     <tbody>
-
+                        @foreach($dataBanner as $row)
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>{{$loop->iteration}}</td>
+                            <td>{{$row->judul}}</td>
+                            <td><img onclick="showImage('{{$row->path_url}}',`{{asset('uploads/banner')}}`)" data-target="#modal-image" data-toggle="modal" style="width: 80px; height:80px;" src="{{asset('uploads/banner')}}/{{$row->path_url}}" alt=""></td>
+                            <td>{{$row->urutan}}</td>
                             <td>
-                                <button type="button" data-target="#modal-form" data-toggle="modal" class="btn btn-secondary btn-sm"><i class="fa fa-edit"></i></button>
-                                <button type="button" data-target="#modal-delete" data-toggle="modal" class="btn btn-secondary btn-sm"><i class="fa fa-trash"></i></button>
+                                @php if($row->is_active == 1){ @endphp
+                                <span class="badge badge-success">Aktif</span>
+                                @php }else{ @endphp
+                                <span class="badge badge-danger">Tidak Aktif</span>
+                                @php } @endphp
+                            </td>
+                            <td>
+                                @php if($row->is_ads == 0){ @endphp
+                                <span class="badge badge-success">Bukan Iklan</span>
+                                @php }else{ @endphp
+                                <span class="badge badge-danger">Iklan</span>
+                                @php } @endphp
+                            </td>
+                            <td>
+                                <button onclick="updateData(`{{$row->id}}`,`{{$row->judul}}`,`{{$row->urutan}}`,`{{$row->is_active}}`,`{{$row->is_ads}}`,`{{$row->path_url}}`)" type="button" data-target="#modal-form" data-toggle="modal" class="btn btn-secondary btn-sm"><i class="fa fa-edit"></i></button>
+                                <button type="button" onclick="deleteData(`{{$row->id}}`)" data-target="#modal-delete" data-toggle="modal" class="btn btn-secondary btn-sm"><i class="fa fa-trash"></i></button>
                             </td>
                         </tr>
+
+                        @endforeach
 
                     </tbody>
 
@@ -90,24 +104,83 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form" method="post" id="form" action="/add-rekening">
+                <form class="form" method="post" id="form" action="/add-rekening" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group row">
-                        <label for="inputPassword" class="col-sm-2 col-form-label">Nomor Rekening</label>
+                        <label for="inputPassword" class="col-sm-2 col-form-label">Judul</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="numberAccount" value="{{old('numberAccount')}}" name="numberAccount" placeholder="Nomor Rekening">
+                            <input type="text" required class="form-control" id="judul" value="{{old('judul')}}" name="judul" placeholder="Judul">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputPassword" class="col-sm-2 col-form-label">Nama Pemilik Rekening</label>
+                        <label for="inputPassword" class="col-sm-2 col-form-label">Urutan</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="accountName" value="{{old('accountName')}}" name="accountName" placeholder="Nama Pemilik Rekening">
+                            <input type="text" required class="form-control" id="urutan" value="{{old('urutan')}}" name="urutan" placeholder="Urutan">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputPassword" class="col-sm-2 col-form-label">Nama Bank</label>
+                        <label for="inputPassword" class="col-sm-2 col-form-label">Banner</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="bankName" value="{{old('bankName')}}" name="bankName" placeholder="Nama Bank">
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" required class="custom-file-input" name="image" id="imagePick">
+                                    <label id="labelNamePhoto" class="custom-file-label" for="imagePick">Choose file</label>
+                                </div>
+                                <!-- <div class="input-group-append">
+                                    <span class="input-group-text">Upload</span>
+                                </div> -->
+                            </div>
+                            <p id="labelPhoto" class="mt-1">(kosongkan jika tidak ingin mengubah foto)</p>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="" class="col-sm-2">Status</label>
+                        <div class="col-sm-10">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <div class="icheck-primary d-inline">
+                                        <input type="radio" required name="isActive" value="1" id="radioStatus1">
+                                        <label for="radioStatus1">
+                                            Aktif
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-10">
+                                    <div class="icheck-primary d-inline">
+                                        <input type="radio" required name="isActive" value="0" id="radioStatus2">
+                                        <label for="radioStatus2">
+                                            Tidak Aktif
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="" class="col-sm-2">Iklan</label>
+                        <div class="col-sm-10">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <div class="icheck-primary d-inline">
+                                        <input type="radio" required name="isAds" value="1" id="radioAds1">
+                                        <label for="radioAds1">
+                                            Ya
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-10">
+                                    <div class="icheck-primary d-inline">
+                                        <input type="radio" required name="isAds" value="0" id="radioAds2">
+                                        <label for="radioAds2">
+                                            Tidak
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+
                         </div>
                     </div>
             </div>
@@ -141,25 +214,80 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modal-image" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content rounded">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Banner</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img src="" style="width: 100%;border-radius:8px;" id="imageBanner" alt="">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Keluar</button>
+                </form>
+            </div>
+            <div class="bg-red rounded-modal" style="color: red;height:15px;"></div>
+        </div>
+    </div>
+</div>
 <script>
-    function updateData(id, numberAccount, nameAccount, bankName) {
-        document.getElementById("numberAccount").value = numberAccount;
-        document.getElementById("accountName").value = nameAccount;
-        document.getElementById("bankName").value = bankName;
-        document.getElementById("titleModal").innerHTML = 'Perbarui Rekening';
-        document.getElementById("form").action = `/update-rekening/${id}`;
+    function checkAds(val) {
+        console.log(val.value);
+    }
+
+    function showImage(image, path) {
+        document.getElementById("imageBanner").src = path + '/' + image;
+    }
+
+    function updateData(id, judul, urutan, is_active, is_ads, photo) {
+        document.getElementById("judul").value = judul;
+        document.getElementById("urutan").value = urutan;
+        document.getElementById("labelNamePhoto").innerHTML = photo;
+        document.getElementById("labelPhoto").hidden = false;
+        document.getElementById("form").action = `/update-banner/${id}`;
+        document.getElementById("titleModal").innerHTML = 'Perbarui Banner';
+        if (is_active == 0) {
+            document.getElementById('radioStatus1').checked = false;
+            document.getElementById('radioStatus2').checked = true;
+        } else {
+            document.getElementById('radioStatus1').checked = true;
+            document.getElementById('radioStatus2').checked = false;
+        }
+
+        if (is_ads == 0) {
+            document.getElementById('radioAds1').checked = false;
+            document.getElementById('radioAds2').checked = true;
+        } else {
+            document.getElementById('radioAds1').checked = true;
+            document.getElementById('radioAds2').checked = false;
+
+        }
+        let requiredImage = document.getElementById("imagePick");
+        requiredImage.removeAttribute('required','')
+        
     }
 
     function addData() {
-        document.getElementById("numberAccount").value = "";
-        document.getElementById("accountName").value = "";
-        document.getElementById("bankName").value = "";
-        document.getElementById("titleModal").innerHTML = 'Tambah Rekening';
-        document.getElementById("form").action = '/add-rekening';
+        document.getElementById("judul").value = "";
+        document.getElementById("urutan").value = "";
+        document.getElementById("labelNamePhoto").innerHTML = '';
+        document.getElementById("labelPhoto").hidden = true;
+        document.getElementById("form").action = '/add-banner';
+        document.getElementById("titleModal").innerHTML = 'Tambah Banner';
+        document.getElementById('radioStatus1').checked = false;
+        document.getElementById('radioStatus2').checked = false;
+        document.getElementById('radioAds1').checked = false;
+        document.getElementById('radioAds2').checked = false;
+        let requiredImage = document.getElementById("imagePick");
+        requiredImage.setAttribute('required','')
     }
 
     function deleteData(id) {
-        document.getElementById("btnDelete").href = `/delete-rekening/${id}`;
+        document.getElementById("btnDelete").href = `/delete-banner/${id}`;
     }
 </script>
 @endsection

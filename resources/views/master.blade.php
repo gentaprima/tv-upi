@@ -117,7 +117,6 @@ use Illuminate\Support\Facades\Session;
                 </p>
               </a>
             </li>
-            @if(Session::get('dataUsers')->role == 0)
 
             <li class="nav-item">
               <a href="/data-banner" class="nav-link {{ Request::is('data-banner') ? 'active' : '' }}">
@@ -127,13 +126,35 @@ use Illuminate\Support\Facades\Session;
                 </p>
               </a>
             </li>
-            <li class="nav-item">
-              <a href="/" class="nav-link">
-              <i class="nav-icon fas fa-audio-description"></i>
+            <li class="nav-item {{ Request::is('data-iklan/beranda')  || Request::is('data-iklan/live') || Request::is('data-iklan/berita')  ? 'menu-open' : '' }}">
+              <a href="#" class="nav-link {{  Request::is('data-iklan/beranda')  || Request::is('data-iklan/live') || Request::is('data-iklan/berita') ? 'active' : '' }}">
+                <i class="nav-icon fas fa-audio-description"></i>
                 <p>
                   Iklan
+                  <i class="fas fa-angle-left right"></i>
                 </p>
               </a>
+              <ul class="nav nav-treeview ">
+                <li class="nav-item">
+                  <a href="/data-iklan/beranda" class="nav-link {{ Request::is('data-iklan/beranda') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Iklan Beranda</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/data-iklan/live" class="nav-link {{ Request::is('data-iklan/live') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Iklan Live</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/data-iklan/berita" class="nav-link {{ Request::is('data-iklan/berita') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Iklan Berita</p>
+                  </a>
+                </li>
+
+              </ul>
             </li>
             <li class="nav-item">
               <a href="/" class="nav-link">
@@ -144,7 +165,7 @@ use Illuminate\Support\Facades\Session;
               </a>
             </li>
             <li class="nav-item">
-              <a href="/" class="nav-link">
+              <a href="/data-video" class="nav-link {{ Request::is('data-video') ? 'active' : '' }}">
                 <i class="nav-icon fas fa-play"></i>
                 <p>
                   Video
@@ -159,27 +180,9 @@ use Illuminate\Support\Facades\Session;
                 </p>
               </a>
             </li>
-            @endif
 
 
-            <!-- <li class="nav-item {{ Request::is('data-rekening')  || Request::is('data-jenis-iuran') ? 'menu-open' : '' }}">
-              <a href="#" class="nav-link {{ Request::is('data-rekening')  || Request::is('data-jenis-iuran') ? 'active' : '' }}">
-                <i class="nav-icon fas fa-toolbox"></i>
-                <p>
-                  Pengaturan
-                  <i class="fas fa-angle-left right"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview ">
-                <li class="nav-item">
-                  <a href="/data-rekening" class="nav-link {{ Request::is('data-rekening') ? 'active' : '' }}">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Data</p>
-                  </a>
-                </li>
-
-              </ul>
-            </li> -->
+           
           </ul>
           </li>
 

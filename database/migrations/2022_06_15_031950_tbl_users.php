@@ -20,6 +20,7 @@ class TblUsers extends Migration
             $table->string('password');
             $table->string('tgl_lahir')->nullable();
             $table->string('jenis_kelamin')->nullable();
+            $table->integer('role');
         });
     }
 

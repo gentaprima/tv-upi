@@ -117,7 +117,6 @@ use Illuminate\Support\Facades\Session;
                 </p>
               </a>
             </li>
-            @if(Session::get('dataUsers')->role == 0)
 
             <li class="nav-item">
               <a href="/data-banner" class="nav-link {{ Request::is('data-banner') ? 'active' : '' }}">
@@ -159,7 +158,6 @@ use Illuminate\Support\Facades\Session;
                 </p>
               </a>
             </li>
-            @endif
 
 
             <!-- <li class="nav-item {{ Request::is('data-rekening')  || Request::is('data-jenis-iuran') ? 'menu-open' : '' }}">

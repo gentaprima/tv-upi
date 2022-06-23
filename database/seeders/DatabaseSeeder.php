@@ -84,6 +84,10 @@ class DatabaseSeeder extends Seeder
                 'id'    => 7,
                 'nama_kategori' => "KBRI Jepang"
             ],
+            [
+                'id'    => 8,
+                'nama_kategori' => "Siaran Ulang"
+            ],
         ];
 
         DB::table('tbl_kategori_video')->insert($dataKategoriVideo);

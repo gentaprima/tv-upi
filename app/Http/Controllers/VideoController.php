@@ -82,4 +82,30 @@ class VideoController extends Controller
         Session::flash('icon', 'success');
         return redirect()->back();
     }
+
+    // API
+
+    public function addCount($id){
+        $video = ModelVideo::find($id);
+        $getCount = $video['count'];
+        $video->count = $getCount + 1;
+        $video->save();
+        return response()->json([
+            'status'  => true,
+            'message' => "Berhasil menambahkan"  
+        ]);
+    }
+
+    public function getVideoSelection(){
+        $data = DB::table('tbl_video')
+                    ->orderBy('count','desc')
+                    ->limit(3)
+                    ->get();
+        return response()->json([
+            'success' => true,
+            'data'    => $data
+        ]);
+    }
+
+    // API
 }

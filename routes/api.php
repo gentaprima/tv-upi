@@ -19,4 +19,5 @@ Route::get('/get-banner','BannerController@getBanner');
 
 // video
 Route::get('/get-video/{jenis}','VideoController@getVideo');
-
+Route::get('/get-video-selection','VideoController@getVideoSelection');
+Route::get('/add-count/{id}','VideoController@addCount');

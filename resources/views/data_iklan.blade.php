@@ -75,7 +75,7 @@
                                 @php } @endphp
                             </td>
                             <td>
-                                <button onclick="updateData(`{{$row->id}}`,`{{$row->image}}`,`{{$row->urutan}}`,`{{$row->jenis}}`,`{{$row->is_active}}`)" type="button" data-target="#modal-form" data-toggle="modal" class="btn btn-secondary btn-sm"><i class="fa fa-edit"></i></button>
+                                <button onclick="updateData(`{{$row->id}}`,`{{$row->image}}`,`{{$row->urutan}}`,`{{$row->jenis}}`,`{{$row->is_active}}`,`{{$row->position}}`)" type="button" data-target="#modal-form" data-toggle="modal" class="btn btn-secondary btn-sm"><i class="fa fa-edit"></i></button>
                                 <button type="button" onclick="deleteData('{{$row->id}}')" data-target="#modal-delete" data-toggle="modal" class="btn btn-secondary btn-sm"><i class="fa fa-trash"></i></button>
                             </td>
                         </tr>
@@ -220,8 +220,9 @@
         document.getElementById("imageBanner").src = path + '/' + image;
     }
 
-    function updateData(id, image, urutan, jenis, is_active) {
+    function updateData(id, image, urutan, jenis, is_active,position) {
         document.getElementById("urutan").value = urutan;
+        document.getElementById("position").value = position;
         document.getElementById("labelNamePhoto").innerHTML = image;
         document.getElementById("labelPhoto").hidden = false;
         document.getElementById("form").action = `/update-ads/${id}`;

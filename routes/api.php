@@ -26,3 +26,6 @@ Route::get('/add-count/{id}','VideoController@addCount');
 // Ads
 Route::get('/get-ads/{jenis}','AdsController@getAds');
 Route::get('/get-ads-beranda/{jenis}/{position}','AdsController@getAdsBeranda');
+
+// jadwal siaran
+Route::get('/jadwal-siaran/{hari}','JadwalSiaranController@getJadwalSiaran');

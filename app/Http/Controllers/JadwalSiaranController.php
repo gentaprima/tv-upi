@@ -95,4 +95,21 @@ class JadwalSiaranController extends Controller
             'message'   => "Jadwal untuk hari" . " $request->hari" . " Berhasil diperbarui"
         ]);
     }
+
+    // API
+
+    public function getJadwalSiaran($hari){
+        $data = DB::table('tbl_jadwal_siaran')
+                    ->where('hari',$hari)
+                    ->orderBy('waktu_mulai','asc')
+                    ->get();
+
+        return response()->json([
+            'success' => true,
+            'data'    => $data
+        ]);
+
+    }
+
+    // API
 }

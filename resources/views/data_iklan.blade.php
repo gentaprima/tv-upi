@@ -249,6 +249,7 @@
         document.getElementById("labelPhoto").hidden = true;
         document.getElementById("form").action = `/add-ads/`;
         document.getElementById("form").method = 'post';
+        document.getElementById("position").value = "";
         document.getElementById("titleModal").innerHTML = 'Tambah Iklan';
         let buttonSave = document.getElementById("btnSave");
         buttonSave.setAttribute("type", "button");

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ModelAds;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -16,12 +17,22 @@ class AdsController extends Controller
         Storage::disk('uploads')->put('ads/'.$filename,File::get($imageBanner));
 
         // add banner to database
-        ModelAds::create([
-            'image' => $filename,
-            'urutan'    => $request->urutan,
-            'jenis'     => $request->jenis,
-            'is_active' => $request->isActive
-        ]);
+        if($request->jenis == "beranda"){
+            ModelAds::create([
+                'image' => $filename,
+                'urutan'    => $request->urutan,
+                'jenis'     => $request->jenis,
+                'is_active' => $request->isActive,
+                'position'  => $request->position
+            ]);
+        }else{
+            ModelAds::create([
+                'image' => $filename,
+                'urutan'    => $request->urutan,
+                'jenis'     => $request->jenis,
+                'is_active' => $request->isActive
+            ]);
+        }
 
         Session::flash('message', 'Iklan '.$request->jenis.' berhasil ditambahkan.'); 
         Session::flash('icon', 'success');
@@ -52,4 +63,33 @@ class AdsController extends Controller
         return redirect()->back()
                             ->withInput($request->input());
     }
+
+    // API
+
+    public function getAds($jenis){
+        $data = DB::table('tbl_ads')
+                    ->where('jenis','=',$jenis)
+                    ->orderBy('urutan')
+                    ->get();
+
+        return response()->json([
+            'success' =>true,
+            'data'    => $data
+        ]);
+    }
+
+    public function getAdsBeranda($jenis,$position){
+        $data = DB::table('tbl_ads')
+                    ->where('jenis','=',$jenis)
+                    ->where('position','=',$position)
+                    ->orderBy('urutan')
+                    ->get();
+
+        return response()->json([
+            'success' =>true,
+            'data'    => $data
+        ]);
+    }
+
+    // API
 }

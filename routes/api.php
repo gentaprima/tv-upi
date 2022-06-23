@@ -21,3 +21,8 @@ Route::get('/get-banner','BannerController@getBanner');
 Route::get('/get-video/{jenis}','VideoController@getVideo');
 Route::get('/get-video-selection','VideoController@getVideoSelection');
 Route::get('/add-count/{id}','VideoController@addCount');
+
+
+// Ads
+Route::get('/get-ads/{jenis}','AdsController@getAds');
+Route::get('/get-ads-beranda/{jenis}/{position}','AdsController@getAdsBeranda');

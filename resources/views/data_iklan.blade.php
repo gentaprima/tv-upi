@@ -51,6 +51,9 @@
                             <th>No</th>
                             <th>Banner</th>
                             <th>Urutan</th>
+                            @php if($jenis == "beranda"){ @endphp
+                                <th>Posisi</th>
+                            @php } @endphp
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
@@ -59,8 +62,11 @@
                         @foreach($dataAds as $row)
                         <tr>
                             <td>{{$loop->iteration}}</td>
-                            <td><img onclick="showImage('{{$row->image}}',`{{asset('uploads/ads')}}`)" data-target="#modal-image" data-toggle="modal" style="width: 80px; height:80px;" src="{{asset('uploads/ads')}}/{{$row->image}}" alt=""></td>
+                            <td><img onclick="showImage('{{$row->image}}',`{{asset('uploads/ads')}}`)" data-target="#modal-image" data-toggle="modal" style="width: 143px; height:80px;" src="{{asset('uploads/ads')}}/{{$row->image}}" alt=""></td>
                             <td>{{$row->urutan}}</td>
+                            @php if($jenis == "beranda"){ @endphp
+                                <td>{{$row->position}}</td>
+                            @php } @endphp
                             <td>
                                 @php if($row->is_active == 1){ @endphp
                                 <span class="badge badge-success">Aktif</span>
@@ -96,6 +102,19 @@
             <div class="modal-body">
                 <form class="form" method="post" id="form" action="/add-rekening" enctype="multipart/form-data">
                     @csrf
+                    @php if($jenis == "beranda"){ @endphp
+                        <div class="form-group row">
+                            <label for="inputPassword" class="col-sm-2 col-form-label">Urutan</label>
+                            <div class="col-sm-10">
+                                <select type="text" required class="form-control" id="position" value="{{old('position')}}" name="position">
+                                    <option value="">-- Pilih Posisi Iklan -- </option>
+                                    <option value="1">Pertama</option>
+                                    <option value="2">Kedua</option>
+                                    <option value="3">Ketiga</option>
+                                </select>
+                            </div>
+                        </div>
+                    @php } @endphp
                     <div class="form-group row">
                         <label for="inputPassword" class="col-sm-2 col-form-label">Urutan</label>
                         <div class="col-sm-10">

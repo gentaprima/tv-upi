@@ -18,6 +18,7 @@ class TblAds extends Migration
             $table->string('image');
             $table->integer('urutan');
             $table->string('jenis');
+            $table->integer('position')->nullable();
             $table->integer('is_active');
             $table->timestamps();
         });

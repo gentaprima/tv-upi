@@ -52,7 +52,7 @@
                             <th>Banner</th>
                             <th>Urutan</th>
                             @php if($jenis == "beranda"){ @endphp
-                                <th>Posisi</th>
+                            <th>Posisi</th>
                             @php } @endphp
                             <th>Status</th>
                             <th>Aksi</th>
@@ -65,7 +65,7 @@
                             <td><img onclick="showImage('{{$row->image}}',`{{asset('uploads/ads')}}`)" data-target="#modal-image" data-toggle="modal" style="width: 143px; height:80px;" src="{{asset('uploads/ads')}}/{{$row->image}}" alt=""></td>
                             <td>{{$row->urutan}}</td>
                             @php if($jenis == "beranda"){ @endphp
-                                <td>{{$row->position}}</td>
+                            <td>{{$row->position}}</td>
                             @php } @endphp
                             <td>
                                 @php if($row->is_active == 1){ @endphp
@@ -103,17 +103,17 @@
                 <form class="form" method="post" id="form" action="/add-rekening" enctype="multipart/form-data">
                     @csrf
                     @php if($jenis == "beranda"){ @endphp
-                        <div class="form-group row">
-                            <label for="inputPassword" class="col-sm-2 col-form-label">Urutan</label>
-                            <div class="col-sm-10">
-                                <select type="text" required class="form-control" id="position" value="{{old('position')}}" name="position">
-                                    <option value="">-- Pilih Posisi Iklan -- </option>
-                                    <option value="1">Pertama</option>
-                                    <option value="2">Kedua</option>
-                                    <option value="3">Ketiga</option>
-                                </select>
-                            </div>
+                    <div class="form-group row">
+                        <label for="inputPassword" class="col-sm-2 col-form-label">Posisi</label>
+                        <div class="col-sm-10">
+                            <select type="text" required class="form-control" id="position" value="{{old('position')}}" name="position">
+                                <option value="">-- Pilih Posisi Iklan -- </option>
+                                <option value="1">Pertama</option>
+                                <option value="2">Kedua</option>
+                                <option value="3">Ketiga</option>
+                            </select>
                         </div>
+                    </div>
                     @php } @endphp
                     <div class="form-group row">
                         <label for="inputPassword" class="col-sm-2 col-form-label">Urutan</label>
@@ -165,7 +165,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Batalkan</button>
-                <button type="submit" class="btn btn-primary">Simpan</button>
+                <button type="submit" id="btnSave" class="btn btn-primary">Simpan</button>
                 </form>
             </div>
             <div class="bg-red rounded-modal" style="color: red;height:15px;"></div>
@@ -214,8 +214,7 @@
     </div>
 </div>
 <script>
-    function checkAds(val) {
-    }
+    function checkAds(val) {}
 
     function showImage(image, path) {
         document.getElementById("imageBanner").src = path + '/' + image;
@@ -237,7 +236,10 @@
         }
 
         let requiredImage = document.getElementById("imagePick");
-        requiredImage.removeAttribute('required','')
+        requiredImage.removeAttribute('required', '')
+        let buttonSave = document.getElementById("btnSave");
+        buttonSave.setAttribute("type", "submit");
+        buttonSave.removeAttribute("onclick");
     }
 
     function addData() {
@@ -247,9 +249,17 @@
         document.getElementById("form").action = `/add-ads/`;
         document.getElementById("form").method = 'post';
         document.getElementById("titleModal").innerHTML = 'Tambah Iklan';
+        let buttonSave = document.getElementById("btnSave");
+        buttonSave.setAttribute("type", "button");
+        buttonSave.setAttribute("onclick", "processAddAds()");
 
         let requiredImage = document.getElementById("imagePick");
-        requiredImage.setAttribute('required','')
+        requiredImage.setAttribute('required', '')
+
+    }
+
+    function processAddAds() {
+       
     }
 
     function deleteData(id) {

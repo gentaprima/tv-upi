@@ -399,6 +399,50 @@ use Illuminate\Support\Facades\Session;
         }
       })
     }
+
+    function processAddAds() {
+      let files = $('#imagePick')[0].files;
+      let token = $("input[name='_token']").val();
+      let urutan = $("input[name='urutan']").val()
+      let position = $("input[name='position']").val()
+      let status = $("input[name='isActive']").val()
+      let jenis = $("input[name='jenis']").val()
+
+      let fd = new FormData();
+      fd.append("image", files[0]);
+      fd.append("_token", token);
+      fd.append("urutan", urutan);
+      fd.append("position", position);
+      fd.append("isActive", status);
+      fd.append("jenis", jenis);
+
+
+      $.ajax({
+        type: "POST",
+        url: `/add-new-ads`,
+        data: fd,
+        processData: false,
+        contentType: false,
+        cache: false,
+        enctype: 'multipart/form-data',
+        success: function(response) {
+          location.reload();
+          if (!response.status) {
+            Toast.fire({
+              icon: "error",
+              title: response.message
+            });
+          } else {
+            Toast.fire({
+              icon: "success",
+              title: response.message
+            });
+            $("#modal-form .close").click()
+           
+          }
+        }
+      })
+    }
   </script>
 </body>
 

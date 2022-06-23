@@ -37,6 +37,7 @@ Route::group(['middleware' => 'check.login', 'prefix' => '/'], function () {
     // iklan
     Route::get('/data-iklan/{id}', 'DashboardController@getIklan');
     Route::post('/add-ads', 'AdsController@store');
+    Route::post('/add-new-ads', 'AdsController@addData');
     Route::post('/update-ads/{id}', 'AdsController@update');
     Route::get('/delete-ads/{id}', 'AdsController@destroy');
 

@@ -6,8 +6,11 @@ use App\Models\ModelAds;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 class AdsController extends Controller
 {
@@ -40,6 +43,73 @@ class AdsController extends Controller
                             ->withInput($request->input());
     }
 
+    public function addData(Request $request){
+
+        if($request->jenis == "beranda"){
+            $validate = Validator::make($request->all(),[
+                'position'    => "required",
+                'urutan'    => "required",
+                'jenis'    => "required",
+                'isActive'    => "required",
+                'image'    => "required",
+            ],[
+                'position.required'    => "Posisi iklan harus dilengkapi",
+                'urutan.required'    => "Ururan harus dilengkapi",
+                'jenis.required'    => "Jenis harus dilengkapi",
+                'isActive.required'    => "Status Publish harus dilengkapi",
+                'image.required'    => "Foto Iklan harus dilengkapi",
+            ]);
+        }else{
+            $validate = Validator::make($request->all(),[
+                'urutan'    => "required",
+                'jenis'    => "required",
+                'isActive'    => "required",
+                'image'    => "required",
+            ],[
+                'urutan.required'    => "Ururan harus dilengkapi",
+                'jenis.required'    => "Jenis harus dilengkapi",
+                'isActive.required'    => "Status Publish harus dilengkapi",
+                'image.required'    => "Foto Iklan harus dilengkapi",
+            ]);
+        }
+
+       
+
+        if ($validate->fails()) {
+            return response()->json([
+                'status'   => false,
+                'message'   => $validate->errors()->first()
+            ]);
+        }
+
+        $imageBanner = $request->file('image');
+        $filename = uniqid() . time() . "."  . explode("/", $imageBanner->getMimeType())[1];
+        Storage::disk('uploads')->put('ads/'.$filename,File::get($imageBanner));
+
+        // add banner to database
+        if($request->jenis == "beranda"){
+            ModelAds::create([
+                'image' => $filename,
+                'urutan'    => $request->urutan,
+                'jenis'     => $request->jenis,
+                'is_active' => $request->isActive,
+                'position'  => $request->position
+            ]);
+        }else{
+            ModelAds::create([
+                'image' => $filename,
+                'urutan'    => $request->urutan,
+                'jenis'     => $request->jenis,
+                'is_active' => $request->isActive
+            ]);
+        }
+
+        return response()->json([
+            'status'    => true,
+            'message'   => "Iklan baru berhasil ditambahkan."
+        ]);
+    }
+
     public function update(Request $request,$id){
         $imageBanner = $request->file('image');
         $ads = ModelAds::find($id);
@@ -70,7 +140,7 @@ class AdsController extends Controller
         unlink($fileName);
 
         $ads->delete();
-        Session::flash('message', 'Banner berhasil dihapus.'); 
+        Session::flash('message', 'Iklan berhasil dihapus.'); 
         Session::flash('icon', 'success');
         return redirect()->back();
     }

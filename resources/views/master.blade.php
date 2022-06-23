@@ -274,7 +274,7 @@ use Illuminate\Support\Facades\Session;
   <script src="{{asset('dashboard/plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
   <script src="{{asset('dashboard/plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
   <script src="{{asset('dashboard/plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
-  <script src="sweetalert2.all.min.js"></script>
+  <!-- <script src="sweetalert2.all.min.js"></script> -->
   <script>
     $(function() {
       bsCustomFileInput.init();

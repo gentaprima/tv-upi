@@ -64,6 +64,17 @@ class AdsController extends Controller
                             ->withInput($request->input());
     }
 
+    public function destroy($id){
+        $ads = ModelAds::find($id);
+        $fileName = public_path().'/uploads/ads/'.$ads['image'];
+        unlink($fileName);
+
+        $ads->delete();
+        Session::flash('message', 'Banner berhasil dihapus.'); 
+        Session::flash('icon', 'success');
+        return redirect()->back();
+    }
+
     // API
 
     public function getAds($jenis){

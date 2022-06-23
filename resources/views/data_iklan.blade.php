@@ -215,7 +215,6 @@
 </div>
 <script>
     function checkAds(val) {
-        console.log(val.value);
     }
 
     function showImage(image, path) {
@@ -246,6 +245,7 @@
         document.getElementById("labelNamePhoto").innerHTML = "Choose File";
         document.getElementById("labelPhoto").hidden = true;
         document.getElementById("form").action = `/add-ads/`;
+        document.getElementById("form").method = 'post';
         document.getElementById("titleModal").innerHTML = 'Tambah Iklan';
 
         let requiredImage = document.getElementById("imagePick");
@@ -253,7 +253,7 @@
     }
 
     function deleteData(id) {
-        document.getElementById("btnDelete").href = `/delete-video/${id}`;
+        document.getElementById("btnDelete").href = `/delete-ads/${id}`;
     }
 </script>
 @endsection

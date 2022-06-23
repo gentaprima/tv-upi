@@ -404,7 +404,7 @@ use Illuminate\Support\Facades\Session;
       let files = $('#imagePick')[0].files;
       let token = $("input[name='_token']").val();
       let urutan = $("input[name='urutan']").val()
-      let position = $("input[name='position']").val()
+     let position =  $('select[name=position] option').filter(':selected').val()
       let status = $("input[name='isActive']").val()
       let jenis = $("input[name='jenis']").val()
 

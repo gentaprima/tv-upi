@@ -126,6 +126,7 @@ class AdsController extends Controller
         $ads->urutan = $request->urutan;
         $ads->is_active = $request->isActive;
         $ads->image = $filename;
+        $ads->position = $request->position;
         $ads->save();
 
         Session::flash('message', 'Iklan '.$request->jenis.' berhasil diperbarui.'); 

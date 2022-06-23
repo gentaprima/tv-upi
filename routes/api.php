@@ -20,6 +20,3 @@ Route::get('/get-banner','BannerController@getBanner');
 // video
 Route::get('/get-video/{jenis}','VideoController@getVideo');
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });

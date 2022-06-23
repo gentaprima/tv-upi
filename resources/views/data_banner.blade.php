@@ -62,7 +62,7 @@
                         <tr>
                             <td>{{$loop->iteration}}</td>
                             <td>{{$row->judul}}</td>
-                            <td><img onclick="showImage('{{$row->path_url}}',`{{asset('uploads/banner')}}`)" data-target="#modal-image" data-toggle="modal" style="width: 80px; height:80px;" src="{{asset('uploads/banner')}}/{{$row->path_url}}" alt=""></td>
+                            <td><img onclick="showImage('{{$row->path_url}}',`{{asset('uploads/banner')}}`)" data-target="#modal-image" data-toggle="modal" style="width: 143px; height:80px;" src="{{asset('uploads/banner')}}/{{$row->path_url}}" alt=""></td>
                             <td>{{$row->urutan}}</td>
                             <td>
                                 @php if($row->is_active == 1){ @endphp

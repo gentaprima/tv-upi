@@ -13,7 +13,7 @@ class VideoController extends Controller
 {
     public function getVideo($jenis){
         $dataVideo = DB::table('tbl_video')
-                        ->where('jenis',$jenis)
+                        ->where('id_kategori',$jenis)
                         ->where('is_active',1)->get();
 
         return response()->json([

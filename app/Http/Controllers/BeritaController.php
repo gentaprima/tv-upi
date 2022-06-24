@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\ModelBerita;
+use App\Models\ModelBeritaUsers;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -97,6 +99,39 @@ class BeritaController extends Controller
             'data'    => $dataNews
         ]);
                         
+    }
+
+    public function addLike($idUsers,$idBerita){
+        $berita = ModelBerita::find($idBerita);
+        $countLike = $berita['count_like'];
+
+        $getBeritaUsers = DB::table('tbl_berita_like')
+                                ->where('id_berita','=',$idBerita)
+                                ->where('id_users','=',$idUsers)
+                                ->first();
+
+        if($getBeritaUsers == null){
+            ModelBeritaUsers::create([
+                'id_users' => $idUsers,
+                'id_berita' => $idBerita
+            ]);
+            $berita->count_like = $countLike + 1;
+        }else{
+            $berita->count_like = $countLike - 1;
+            DB::table('tbl_berita_like')->where('id_users','=',$idUsers)->where('id_berita','=',$idBerita)->delete();
+
+        }
+        $berita->save();
+
+        return response()->json([
+            'message' => 'sukses',
+            'success' => true,
+
+        ]);
+
+        
+
+
     }
 
     // API

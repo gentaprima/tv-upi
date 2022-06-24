@@ -228,6 +228,8 @@
     function updateData(id) {
         document.getElementById("titleModal").innerHTML = 'Perbarui Berita';
         document.getElementById("form").action = `/update-berita/${id}`;
+        let requiredImage = document.getElementById("imagePick");
+        requiredImage.removeAttribute('required','')
         $.ajax({
             type: 'get',
             dataType: 'html',
@@ -270,6 +272,8 @@
     }
 
     function addData() {
+        let requiredImage = document.getElementById("imagePick");
+        requiredImage.setAttribute('required','')
         document.getElementById("kategoriBerita").value = "";
         document.getElementById("titleModal").innerHTML = 'Tambah Berita';
         document.getElementById("form").action = '/add-berita';

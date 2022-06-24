@@ -126,8 +126,8 @@ use Illuminate\Support\Facades\Session;
                 </p>
               </a>
             </li>
-            <li class="nav-item {{ Request::is('data-iklan/beranda')  || Request::is('data-iklan/live') || Request::is('data-iklan/berita')  ? 'menu-open' : '' }}">
-              <a href="#" class="nav-link {{  Request::is('data-iklan/beranda')  || Request::is('data-iklan/live') || Request::is('data-iklan/berita') ? 'active' : '' }}">
+            <li class="nav-item {{ Request::is('data-iklan/beranda')  || Request::is('data-iklan/live') || Request::is('data-iklan/berita')  || Request::is('data-iklan/detail-berita')  || Request::is('data-iklan/detail-video') ? 'menu-open' : '' }}">
+              <a href="#" class="nav-link {{  Request::is('data-iklan/beranda')  || Request::is('data-iklan/live') || Request::is('data-iklan/berita')  || Request::is('data-iklan/detail-berita')  || Request::is('data-iklan/detail-video')? 'active' : '' }}">
                 <i class="nav-icon fas fa-audio-description"></i>
                 <p>
                   Iklan
@@ -151,6 +151,18 @@ use Illuminate\Support\Facades\Session;
                   <a href="/data-iklan/berita" class="nav-link {{ Request::is('data-iklan/berita') ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Iklan Berita</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/data-iklan/detail-berita" class="nav-link {{ Request::is('data-iklan/detail-berita') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Iklan Detail Berita</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/data-iklan/detail-video" class="nav-link {{ Request::is('data-iklan/detail-video') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Iklan Detail video</p>
                   </a>
                 </li>
 

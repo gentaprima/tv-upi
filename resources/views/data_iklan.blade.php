@@ -34,7 +34,7 @@
             <div class="card p-5 rounded mb-3">
                 <div class="row">
                     <div class="col-6">
-                        <button class="btn btn-outline-primary size-btn" onclick="addData()" data-toggle="modal" data-target="#modal-form">Tambah Data</button>
+                        <button class="btn btn-outline-primary size-btn" onclick="addData('{{$jenis}}')" data-toggle="modal" data-target="#modal-form">Tambah Data</button>
                     </div>
                     <div class="col-6">
                         <div class="input-group mb-3 search">
@@ -65,7 +65,15 @@
                             <td><img onclick="showImage('{{$row->image}}',`{{asset('uploads/ads')}}`)" data-target="#modal-image" data-toggle="modal" style="width: 143px; height:80px;" src="{{asset('uploads/ads')}}/{{$row->image}}" alt=""></td>
                             <td>{{$row->urutan}}</td>
                             @php if($jenis == "beranda"){ @endphp
-                            <td>{{$row->position}}</td>
+                            <td>
+                                @php if($row->position == 1){ @endphp
+                                <span class="badge badge-primary">TOP</span>
+                                @php }else if($row->position == 2){@endphp
+                                <span class="badge badge-primary">CENTER</span>
+                                @php }else{@endphp
+                                <span class="badge badge-primary">BOTTOM</span>
+                                @php }@endphp
+                            </td>
                             @php } @endphp
                             <td>
                                 @php if($row->is_active == 1){ @endphp
@@ -76,7 +84,9 @@
                             </td>
                             <td>
                                 <button onclick="updateData(`{{$row->id}}`,`{{$row->image}}`,`{{$row->urutan}}`,`{{$row->jenis}}`,`{{$row->is_active}}`,`{{$row->position}}`)" type="button" data-target="#modal-form" data-toggle="modal" class="btn btn-secondary btn-sm"><i class="fa fa-edit"></i></button>
+                                @php if($row->is_default == 0){ @endphp
                                 <button type="button" onclick="deleteData('{{$row->id}}')" data-target="#modal-delete" data-toggle="modal" class="btn btn-secondary btn-sm"><i class="fa fa-trash"></i></button>
+                                @php } @endphp
                             </td>
                         </tr>
 
@@ -176,7 +186,7 @@
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content rounded">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Tambah Rekening</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Hapus Iklan</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -220,9 +230,11 @@
         document.getElementById("imageBanner").src = path + '/' + image;
     }
 
-    function updateData(id, image, urutan, jenis, is_active,position) {
+    function updateData(id, image, urutan, jenis, is_active, position) {
+        if (jenis == "beranda") {
+            document.getElementById("position").value = position;
+        }
         document.getElementById("urutan").value = urutan;
-        document.getElementById("position").value = position;
         document.getElementById("labelNamePhoto").innerHTML = image;
         document.getElementById("labelPhoto").hidden = false;
         document.getElementById("form").action = `/update-ads/${id}`;
@@ -243,13 +255,15 @@
         buttonSave.removeAttribute("onclick");
     }
 
-    function addData() {
+    function addData(jenis) {
+        if (jenis == "beranda") {
+            document.getElementById("position").value = "";
+        }
         document.getElementById("urutan").value = "";
         document.getElementById("labelNamePhoto").innerHTML = "Choose File";
         document.getElementById("labelPhoto").hidden = true;
         document.getElementById("form").action = `/add-ads/`;
         document.getElementById("form").method = 'post';
-        document.getElementById("position").value = "";
         document.getElementById("titleModal").innerHTML = 'Tambah Iklan';
         let buttonSave = document.getElementById("btnSave");
         buttonSave.setAttribute("type", "button");
@@ -261,7 +275,7 @@
     }
 
     function processAddAds() {
-       
+
     }
 
     function deleteData(id) {

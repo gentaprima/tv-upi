@@ -152,5 +152,67 @@ class DatabaseSeeder extends Seeder
         ];
 
         DB::table('tbl_jadwal_siaran')->insert($dataSiaran);
+
+        $dataAds = [
+            [
+                "image" => "default_ads.png",
+                "urutan" => 1,
+                "position"  => 1,
+                "is_active" => 1,
+                "jenis" => "beranda",
+                "is_default"  => 1
+            ],
+            [
+                "image" => "default_ads.png",
+                "urutan" => 1,
+                "position"  => 2,
+                "is_active" => 1,
+                "jenis" => "beranda",
+                "is_default"  => 1
+            ],
+            [
+                "image" => "default_ads.png",
+                "urutan" => 1,
+                "position"  => 3,
+                "is_active" => 1,
+                "jenis" => "beranda",
+                "is_default"  => 1
+            ],
+            [
+                "image" => "default_ads.png",
+                "urutan" => 1,
+                "is_active" => 1,
+                "jenis" => "live",
+                "is_default"  => 1,
+                "position"  => null,
+            ],
+            [
+                "image" => "default_ads.png",
+                "urutan" => 1,
+                "is_active" => 1,
+                "jenis" => "berita",
+                "is_default"  => 1,
+                "position"  => null,
+            ],
+            [
+                "image" => "default_ads.png",
+                "urutan" => 1,
+                "is_active" => 1,
+                "jenis" => "detail-video",
+                "is_default"  => 1,
+                "position"  => null,
+            ],
+            [
+                "image" => "default_ads.png",
+                "urutan" => 1,
+                "is_active" => 1,
+                "jenis" => "detail-berita",
+                "is_default"  => 1,
+                "position"  => null,
+            ],
+            
+        ];
+
+        DB::table('tbl_ads')->insert($dataAds);
     }
 }

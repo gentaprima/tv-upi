@@ -20,6 +20,7 @@ class TblAds extends Migration
             $table->string('jenis');
             $table->integer('position')->nullable();
             $table->integer('is_active');
+            $table->integer('is_default')->nullable();
             $table->timestamps();
         });
     }

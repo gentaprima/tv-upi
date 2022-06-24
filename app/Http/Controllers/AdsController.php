@@ -14,13 +14,14 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 class AdsController extends Controller
 {
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $imageBanner = $request->file('image');
         $filename = uniqid() . time() . "."  . explode("/", $imageBanner->getMimeType())[1];
-        Storage::disk('uploads')->put('ads/'.$filename,File::get($imageBanner));
+        Storage::disk('uploads')->put('ads/' . $filename, File::get($imageBanner));
 
         // add banner to database
-        if($request->jenis == "beranda"){
+        if ($request->jenis == "beranda") {
             ModelAds::create([
                 'image' => $filename,
                 'urutan'    => $request->urutan,
@@ -28,7 +29,7 @@ class AdsController extends Controller
                 'is_active' => $request->isActive,
                 'position'  => $request->position
             ]);
-        }else{
+        } else {
             ModelAds::create([
                 'image' => $filename,
                 'urutan'    => $request->urutan,
@@ -37,35 +38,36 @@ class AdsController extends Controller
             ]);
         }
 
-        Session::flash('message', 'Iklan '.$request->jenis.' berhasil ditambahkan.'); 
+        Session::flash('message', 'Iklan ' . $request->jenis . ' berhasil ditambahkan.');
         Session::flash('icon', 'success');
         return redirect()->back()
-                            ->withInput($request->input());
+            ->withInput($request->input());
     }
 
-    public function addData(Request $request){
+    public function addData(Request $request)
+    {
 
-        if($request->jenis == "beranda"){
-            $validate = Validator::make($request->all(),[
+        if ($request->jenis == "beranda") {
+            $validate = Validator::make($request->all(), [
                 'position'    => "required",
                 'urutan'    => "required",
                 'jenis'    => "required",
                 'isActive'    => "required",
                 'image'    => "required",
-            ],[
+            ], [
                 'position.required'    => "Posisi iklan harus dilengkapi",
                 'urutan.required'    => "Ururan harus dilengkapi",
                 'jenis.required'    => "Jenis harus dilengkapi",
                 'isActive.required'    => "Status Publish harus dilengkapi",
                 'image.required'    => "Foto Iklan harus dilengkapi",
             ]);
-        }else{
-            $validate = Validator::make($request->all(),[
+        } else {
+            $validate = Validator::make($request->all(), [
                 'urutan'    => "required",
                 'jenis'    => "required",
                 'isActive'    => "required",
                 'image'    => "required",
-            ],[
+            ], [
                 'urutan.required'    => "Ururan harus dilengkapi",
                 'jenis.required'    => "Jenis harus dilengkapi",
                 'isActive.required'    => "Status Publish harus dilengkapi",
@@ -73,7 +75,7 @@ class AdsController extends Controller
             ]);
         }
 
-       
+
 
         if ($validate->fails()) {
             return response()->json([
@@ -84,10 +86,10 @@ class AdsController extends Controller
 
         $imageBanner = $request->file('image');
         $filename = uniqid() . time() . "."  . explode("/", $imageBanner->getMimeType())[1];
-        Storage::disk('uploads')->put('ads/'.$filename,File::get($imageBanner));
+        Storage::disk('uploads')->put('ads/' . $filename, File::get($imageBanner));
 
         // add banner to database
-        if($request->jenis == "beranda"){
+        if ($request->jenis == "beranda") {
             ModelAds::create([
                 'image' => $filename,
                 'urutan'    => $request->urutan,
@@ -95,7 +97,7 @@ class AdsController extends Controller
                 'is_active' => $request->isActive,
                 'position'  => $request->position
             ]);
-        }else{
+        } else {
             ModelAds::create([
                 'image' => $filename,
                 'urutan'    => $request->urutan,
@@ -110,17 +112,18 @@ class AdsController extends Controller
         ]);
     }
 
-    public function update(Request $request,$id){
+    public function update(Request $request, $id)
+    {
         $imageBanner = $request->file('image');
         $ads = ModelAds::find($id);
-        if($imageBanner == null){
+        if ($imageBanner == null) {
             $filename = $ads['image'];
-        }else{
+        } else {
 
             $filename = uniqid() . time() . "."  . explode("/", $imageBanner->getMimeType())[1];
-            Storage::disk('uploads')->put('ads/'.$filename,File::get($imageBanner));
+            Storage::disk('uploads')->put('ads/' . $filename, File::get($imageBanner));
         }
-        
+
 
         // add banner to database
         $ads->urutan = $request->urutan;
@@ -129,46 +132,68 @@ class AdsController extends Controller
         $ads->position = $request->position;
         $ads->save();
 
-        Session::flash('message', 'Iklan '.$request->jenis.' berhasil diperbarui.'); 
+        Session::flash('message', 'Iklan ' . $request->jenis . ' berhasil diperbarui.');
         Session::flash('icon', 'success');
         return redirect()->back()
-                            ->withInput($request->input());
+            ->withInput($request->input());
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         $ads = ModelAds::find($id);
-        $fileName = public_path().'/uploads/ads/'.$ads['image'];
+        $fileName = public_path() . '/uploads/ads/' . $ads['image'];
         unlink($fileName);
 
         $ads->delete();
-        Session::flash('message', 'Iklan berhasil dihapus.'); 
+        Session::flash('message', 'Iklan berhasil dihapus.');
         Session::flash('icon', 'success');
         return redirect()->back();
     }
 
     // API
 
-    public function getAds($jenis){
+    public function getAds($jenis)
+    {
         $data = DB::table('tbl_ads')
-                    ->where('jenis','=',$jenis)
-                    ->orderBy('urutan')
-                    ->get();
+            ->where('jenis', '=', $jenis)
+            ->where('is_default', '=', null)
+            ->orderBy('urutan')
+            ->get();
+
+        if (count($data) == 0) {
+            $data = DB::table('tbl_ads')
+                ->where('jenis', '=', $jenis)
+                ->where('is_default', '=', 1)
+                ->orderBy('urutan')
+                ->get();
+        }
 
         return response()->json([
-            'success' =>true,
+            'success' => true,
             'data'    => $data
         ]);
     }
 
-    public function getAdsBeranda($jenis,$position){
+    public function getAdsBeranda($jenis, $position)
+    {
         $data = DB::table('tbl_ads')
-                    ->where('jenis','=',$jenis)
-                    ->where('position','=',$position)
+            ->where('jenis', '=', $jenis)
+            ->where('position', '=', $position)
+            ->where('is_default', '=', null)
+            ->orderBy('urutan')
+            ->get();
+        
+        if(count($data) == 0){
+            $data =  DB::table('tbl_ads')
+                    ->where('jenis', '=', $jenis)
+                    ->where('position', '=', $position)
+                    ->where('is_default', '=', 1)
                     ->orderBy('urutan')
                     ->get();
+        }
 
         return response()->json([
-            'success' =>true,
+            'success' => true,
             'data'    => $data
         ]);
     }

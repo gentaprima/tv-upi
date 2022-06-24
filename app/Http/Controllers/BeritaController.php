@@ -5,11 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\ModelBerita;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 class BeritaController extends Controller
 {
     public function store(Request $request){
+        $imageBanner = $request->file('image');
+        $filename = uniqid() . time() . "."  . explode("/", $imageBanner->getMimeType())[1];
+        Storage::disk('uploads')->put('berita/'.$filename,File::get($imageBanner));
         ModelBerita::create([
             'judul' => $request->judul,
             'id_kategori'   => $request->kategoriBerita,
@@ -17,7 +22,8 @@ class BeritaController extends Controller
             'tgl'           => date('Y-m-d'),
             'count_like'    => 0,
             'created_by'    => "Admin",
-            'is_publish'    => $request->status
+            'is_publish'    => $request->status,
+            'image'         => $filename
         ]);
         Session::flash('message', 'Berita berhasil ditambahkan.'); 
         Session::flash('icon', 'success');
@@ -56,4 +62,19 @@ class BeritaController extends Controller
             $data
         );
     }
+
+    // API
+
+    public function getLatestNews(){
+        $data = DB::table('tbl_berita')
+                    ->leftJoin('tbl_kategori_berita','tbl_berita.id_kategori','=','tbl_kategori_berita.id')
+                    ->orderBy('tbl_berita.id','desc')
+                    ->first();
+        return response()->json([
+            'success' =>true,
+            'data' => $data
+        ]);
+    }
+
+    // API
 }

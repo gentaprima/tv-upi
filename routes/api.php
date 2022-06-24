@@ -29,3 +29,7 @@ Route::get('/get-ads-beranda/{jenis}/{position}','AdsController@getAdsBeranda');
 
 // jadwal siaran
 Route::get('/jadwal-siaran/{hari}','JadwalSiaranController@getJadwalSiaran');
+
+// berita
+Route::get('/get-kategori-berita','KategoriBeritaController@getKategori');
+Route::get('/get-latest-news','BeritaController@getLatestNews');

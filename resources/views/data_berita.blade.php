@@ -88,7 +88,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form" method="post" id="form" action="/add-rekening">
+                <form class="form" method="post" id="form" action="/add-rekening" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group row">
                         <label for="inputPassword" class="col-sm-2 col-form-label">Judul</label>
@@ -114,6 +114,21 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label for="inputPassword" class="col-sm-2 col-form-label">Banner</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" required class="custom-file-input" name="image" id="imagePick">
+                                    <label id="labelNamePhoto" class="custom-file-label" for="imagePick">Choose file</label>
+                                </div>
+                                <!-- <div class="input-group-append">
+                                    <span class="input-group-text">Upload</span>
+                                </div> -->
+                            </div>
+                            <p id="labelPhoto" class="mt-1">(kosongkan jika tidak ingin mengubah foto)</p>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label for="inputPassword" class="col-sm-2 col-form-label">Status</label>
                         <div class="col-sm-10">
                             <div class="row">
@@ -126,7 +141,7 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-10">
-                                <div class="icheck-primary d-inline">
+                                    <div class="icheck-primary d-inline">
                                         <input type="radio" required id="radioStatusDraft" name="status" value="0">
                                         <label for="radioStatusDraft">
                                             Draft
@@ -180,7 +195,7 @@
                     <div class="col-sm-3"><span class="font-weight-bold">Dibuat Oleh</span></div>
                     <div class="col-sm-9"><span id="createdByDetail">judul</span></div>
                 </div>
-            </div>  
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Keluar</button>
             </div>
@@ -212,34 +227,37 @@
 <script>
     function updateData(id) {
         document.getElementById("titleModal").innerHTML = 'Perbarui Berita';
-        document.getElementById("form").action = `/update-berita/${id}`;   
+        document.getElementById("form").action = `/update-berita/${id}`;
         $.ajax({
             type: 'get',
-            dataType:'html',
-            url:`/show-berita/${id}`,
-            success : function(response){
+            dataType: 'html',
+            url: `/show-berita/${id}`,
+            success: function(response) {
                 let data = JSON.parse(response);
                 document.getElementById("judul").value = data.judul;
                 document.getElementById("kategoriBerita").value = data.id_kategori;
                 document.getElementById("tanggalDetail").innerHTML = data.tgl;
                 document.getElementById("deskripsi").innerHTML = data.deskripsi;
-                if(data.is_publish == 1){
+                document.getElementById("labelNamePhoto").innerHTML = data.image;
+                document.getElementById("labelPhoto").hidden = false;
+                if (data.is_publish == 1) {
                     document.getElementById("radioStatusPublish").checked = true
                     document.getElementById("radioStatusDraft").checked = false
-                }else{
+                } else {
                     document.getElementById("radioStatusPublish").checked = false
                     document.getElementById("radioStatusDraft").checked = true
-                    
+
                 }
             }
         })
     }
-    function showDetail(id){
+
+    function showDetail(id) {
         $.ajax({
             type: 'get',
-            dataType:'html',
-            url:`/show-berita/${id}`,
-            success : function(response){
+            dataType: 'html',
+            url: `/show-berita/${id}`,
+            success: function(response) {
                 let data = JSON.parse(response);
                 document.getElementById("judulDetail").innerHTML = data.judul;
                 document.getElementById("kategoriDetail").innerHTML = data.nama_kategori;
@@ -250,11 +268,13 @@
             }
         })
     }
+
     function addData() {
         document.getElementById("kategoriBerita").value = "";
         document.getElementById("titleModal").innerHTML = 'Tambah Berita';
         document.getElementById("form").action = '/add-berita';
     }
+
     function deleteData(id) {
         document.getElementById("btnDelete").href = `/delete-kategori-berita/${id}`;
     }

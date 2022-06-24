@@ -36,24 +36,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('tbl_banner')->insert($dataBanner);
 
-        $dataVideo = [
-            [
-                'judul' => 'test 1',
-                'link'  => 'L6mQuFiVmx4',
-                'is_active' => 1,
-                'count' => 1,
-                'id_kategori' => 1,
-                'banner' => "62b00b6b1dbd11655704427.png"
-            ],
-            [
-                'judul' => 'test 1',
-                'link'  => 'L6mQuFiVmx4',
-                'is_active' => 1,
-                'count' => 1,
-                'id_kategori' => 2,
-                'banner' => "62b00b6b1dbd11655704427.png"
-            ]
-        ];
+     
 
         $dataKategoriVideo = [
             [
@@ -91,7 +74,7 @@ class DatabaseSeeder extends Seeder
         ];
 
         DB::table('tbl_kategori_video')->insert($dataKategoriVideo);
-        DB::table('tbl_video')->insert($dataVideo);
+      
         DB::table('tbl_users')->insert([
             'email' => "admin@gmail.com",
             'nama_lengkap' => "Admin",

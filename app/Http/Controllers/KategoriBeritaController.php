@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ModelkategoriBerita;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class KategoriBeritaController extends Controller
@@ -36,4 +37,17 @@ class KategoriBeritaController extends Controller
         Session::flash('icon', 'success');
         return redirect()->back();
     }
+
+    // API
+
+    public function getKategori(){
+        $data = DB::table('tbl_kategori_berita')->get();
+
+        return response()->json([
+            'success' => true,
+            'data'      => $data
+        ]);
+    }
+
+    // API
 }

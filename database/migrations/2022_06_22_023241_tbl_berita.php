@@ -16,12 +16,13 @@ class TblBerita extends Migration
         Schema::create('tbl_berita',function(Blueprint $table){
             $table->id();
             $table->string('judul');
-            $table->string('deskripsi');
+            $table->text('deskripsi');
             $table->date('tgl');
             $table->string('count_like');
             $table->string('created_by');
             $table->unsignedBigInteger("id_kategori")->unsigned();
             $table->integer('is_publish');
+            $table->string('image');
             $table->foreign("id_kategori")->references("id")->on('tbl_kategori_berita')->onDelete('cascade');
         });
     }

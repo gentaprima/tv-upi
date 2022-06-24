@@ -125,7 +125,7 @@ class BeritaController extends Controller
 
         return response()->json([
             'message' => 'sukses',
-            'success' => true,
+            'status' => true,
 
         ]);
 

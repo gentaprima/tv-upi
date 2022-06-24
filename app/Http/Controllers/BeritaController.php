@@ -76,5 +76,28 @@ class BeritaController extends Controller
         ]);
     }
 
+    public function getNews(Request $request){
+        if($request->kategori == 0){
+            $dataNews = DB::table('tbl_berita')
+                            ->leftJoin('tbl_kategori_berita','tbl_berita.id_kategori','=','tbl_kategori_berita.id')
+                            ->orderBy('tbl_berita.id','desc')
+                            ->limit(3)
+                            ->get();
+        }else{
+            $dataNews = DB::table('tbl_berita')
+                            ->leftJoin('tbl_kategori_berita','tbl_berita.id_kategori','=','tbl_kategori_berita.id')
+                            ->where('id_kategori','=',$request->kategori)
+                            ->orderBy('tbl_berita.id','desc')
+                            ->limit(3)
+                            ->get();
+        }
+
+        return response()->json([
+            'success' => true,
+            'data'    => $dataNews
+        ]);
+                        
+    }
+
     // API
 }

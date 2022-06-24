@@ -6,6 +6,7 @@ use App\Models\ModelkategoriBerita;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use stdClass;
 
 class KategoriBeritaController extends Controller
 {
@@ -41,11 +42,22 @@ class KategoriBeritaController extends Controller
     // API
 
     public function getKategori(){
-        $data = DB::table('tbl_kategori_berita')->get();
+        $data = ModelkategoriBerita::all();
+        $newData = [
+            "id"    => 0,
+            "nama_kategori" => "Semua Berita"
+        ];
+        $kategoriBerita = [];
+        array_push($kategoriBerita,$newData);
+        foreach($data as $dt){
+            array_push($kategoriBerita,$dt);
+        }
+
+        
 
         return response()->json([
             'success' => true,
-            'data'      => $data
+            'data'      => $kategoriBerita
         ]);
     }
 

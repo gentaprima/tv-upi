@@ -33,3 +33,4 @@ Route::get('/jadwal-siaran/{hari}','JadwalSiaranController@getJadwalSiaran');
 // berita
 Route::get('/get-kategori-berita','KategoriBeritaController@getKategori');
 Route::get('/get-latest-news','BeritaController@getLatestNews');
+Route::get('/get-news','BeritaController@getNews');

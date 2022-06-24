@@ -35,3 +35,6 @@ Route::get('/get-kategori-berita','KategoriBeritaController@getKategori');
 Route::get('/get-latest-news','BeritaController@getLatestNews');
 Route::get('/get-news','BeritaController@getNews');
 Route::get('/add-like-news/{idUsers}/{idBerita}','BeritaController@addLike');
+
+// Users
+Route::post('/add-users','UsersController@store');

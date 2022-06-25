@@ -19,8 +19,9 @@ class UsersController extends Controller
     
             DB::table('tbl_users')->insert($users);
         }
+        $data = DB::table('tbl_users')->where('email','=',$request->email)->first();
         return response()->json([
-            'message' => 'sukses',
+            'data' => $data,
             'status' => true,
 
         ]);

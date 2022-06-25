@@ -118,11 +118,10 @@ class BeritaController extends Controller
             array_push($dataNewsLikeUsers,$ln);
         }
 
-        dd(array_replace_recursive($dataNews,$dataNewsLikeUsers));
 
         return response()->json([
             'success' => true,
-            'data'    => $dataNews
+            'data'    => (array_replace_recursive($dataNews,$dataNewsLikeUsers))
         ]);
                         
     }

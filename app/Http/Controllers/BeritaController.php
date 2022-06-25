@@ -72,6 +72,7 @@ class BeritaController extends Controller
                     ->leftJoin('tbl_kategori_berita','tbl_berita.id_kategori','=','tbl_kategori_berita.id')
                     ->orderBy('tbl_berita.id','desc')
                     ->first();
+                
         return response()->json([
             'success' =>true,
             'data' => $data
@@ -80,19 +81,44 @@ class BeritaController extends Controller
 
     public function getNews(Request $request){
         if($request->kategori == 0){
-            $dataNews = DB::table('tbl_berita')
+            $data = DB::table('tbl_berita')
                             ->leftJoin('tbl_kategori_berita','tbl_berita.id_kategori','=','tbl_kategori_berita.id')
+                            ->where('is_publish','=',1)
                             ->orderBy('tbl_berita.id','desc')
                             ->limit(3)
                             ->get();
+
+           
         }else{
-            $dataNews = DB::table('tbl_berita')
+            $data = DB::table('tbl_berita')
                             ->leftJoin('tbl_kategori_berita','tbl_berita.id_kategori','=','tbl_kategori_berita.id')
                             ->where('id_kategori','=',$request->kategori)
+                            ->where('is_publish','=',1)
                             ->orderBy('tbl_berita.id','desc')
                             ->limit(3)
                             ->get();
+                            
         }
+
+        $likeNews = DB::table('tbl_berita_like')
+                    ->select('tbl_berita.*')
+                    ->leftJoin('tbl_berita','tbl_berita_like.id_berita','=','tbl_berita.id')
+                    ->where('tbl_berita_like.id_users','=',$request->idUsers)
+                    ->get();
+
+        $dataNews = [];
+        $dataNewsLikeUsers = [];
+        foreach($data as $dt){
+            $dt->like = false;
+            array_push($dataNews,$dt);
+        }
+
+        foreach($likeNews as $ln){
+            $ln->like = true;
+            array_push($dataNewsLikeUsers,$ln);
+        }
+
+        dd(array_replace_recursive($dataNews,$dataNewsLikeUsers));
 
         return response()->json([
             'success' => true,

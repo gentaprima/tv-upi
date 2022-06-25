@@ -101,7 +101,7 @@ class BeritaController extends Controller
         }
 
         $likeNews = DB::table('tbl_berita_like')
-                    ->select('tbl_berita.*','tbl_berita.like.id as id_berita_like')
+                    ->select('tbl_berita.*','tbl_berita_like.id as id_berita_like')
                     ->leftJoin('tbl_berita','tbl_berita_like.id_berita','=','tbl_berita.id')
                     ->where('tbl_berita_like.id_users','=',$request->idUsers)
                     ->get();

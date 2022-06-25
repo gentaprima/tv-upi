@@ -82,7 +82,7 @@ class BeritaController extends Controller
     public function getNews(Request $request){
         if($request->kategori == 0){
             $data = DB::table('tbl_berita')
-                            ->select('tbl_berita.*','tbl_kategori_berita.nam_kategori')
+                            ->select('tbl_berita.*','tbl_kategori_berita.nama_kategori')
                             ->leftJoin('tbl_kategori_berita','tbl_berita.id_kategori','=','tbl_kategori_berita.id')
                             ->where('is_publish','=',1)
                             ->orderBy('tbl_berita.id','desc')

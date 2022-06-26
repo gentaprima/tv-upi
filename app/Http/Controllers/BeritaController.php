@@ -71,12 +71,21 @@ class BeritaController extends Controller
 
     // API
 
-    public function getLatestNews()
+    public function getLatestNews(Request $request)
     {
         $data = DB::table('tbl_berita')
+            ->select('tbl_berita.*', 'tbl_kategori_berita.nama_kategori')
             ->leftJoin('tbl_kategori_berita', 'tbl_berita.id_kategori', '=', 'tbl_kategori_berita.id')
             ->orderBy('tbl_berita.id', 'desc')
             ->first();
+
+        $ceklike = DB::table('tbl_berita_like')->where('id_berita','=',$data->id)->where('id_users','=',$request->idUsers)->first();
+        if($ceklike != null){
+            $data->like = true;
+        }else{
+            $data->like = false;
+
+        }
 
         return response()->json([
             'success' => true,

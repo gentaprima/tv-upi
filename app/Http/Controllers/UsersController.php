@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ModelUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -26,5 +27,18 @@ class UsersController extends Controller
 
         ]);
 
+    }
+
+    public function update(Request $request,$id){
+        $users = ModelUsers::find($id);
+        $users->jenis_kelamin = $request->gender;
+        $users->nomor_telepon = $request->phoneNumber;
+        $users->tgl_lahir = $request->dateBirth;
+        $users->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => "Profil berhasil diperbarui"
+        ]);
     }
 }

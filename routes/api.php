@@ -38,3 +38,4 @@ Route::get('/add-like-news/{idUsers}/{idBerita}','BeritaController@addLike');
 
 // Users
 Route::post('/add-users','UsersController@store');
+Route::post('/update-profile/{id}','UsersController@update');

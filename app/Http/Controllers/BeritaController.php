@@ -102,7 +102,7 @@ class BeritaController extends Controller
                 ->leftJoin('tbl_kategori_berita', 'tbl_berita.id_kategori', '=', 'tbl_kategori_berita.id')
                 ->where('is_publish', '=', 1)
                 ->orderBy('tbl_berita.id', 'desc')
-                ->paginate(2);
+                ->paginate(3);
         } else {
             $data = DB::table('tbl_berita')
                 ->select('tbl_berita.*', 'tbl_kategori_berita.nama_kategori')
@@ -110,7 +110,7 @@ class BeritaController extends Controller
                 ->where('id_kategori', '=', $request->kategori)
                 ->where('is_publish', '=', 1)
                 ->orderBy('tbl_berita.id', 'desc')
-                ->paginate(2);
+                ->paginate(3);
            
         }
         

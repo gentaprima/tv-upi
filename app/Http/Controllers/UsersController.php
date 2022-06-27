@@ -15,6 +15,11 @@ class UsersController extends Controller
             $users = [
                 'email' => $request->email,
                 'nama_lengkap' => $request->fullName,
+                'tgl_lahir' => "",
+                'jenis_kelamin' => '',
+                'nomor_telepon' =>'',
+                'foto'  => "",
+                'date' => "",
                 'role'  => 0
             ];
     

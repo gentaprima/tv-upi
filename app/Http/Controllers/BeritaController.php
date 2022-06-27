@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ModelBerita;
 use App\Models\ModelBeritaUsers;
+use Dflydev\DotAccessData\Data;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -100,9 +101,8 @@ class BeritaController extends Controller
                 ->select('tbl_berita.*', 'tbl_kategori_berita.nama_kategori')
                 ->leftJoin('tbl_kategori_berita', 'tbl_berita.id_kategori', '=', 'tbl_kategori_berita.id')
                 ->where('is_publish', '=', 1)
-                ->orderBy('tbl_berita.id', 'asc')
-                ->limit(3)
-                ->get();
+                ->orderBy('tbl_berita.id', 'desc')
+                ->paginate(2);
         } else {
             $data = DB::table('tbl_berita')
                 ->select('tbl_berita.*', 'tbl_kategori_berita.nama_kategori')
@@ -110,8 +110,7 @@ class BeritaController extends Controller
                 ->where('id_kategori', '=', $request->kategori)
                 ->where('is_publish', '=', 1)
                 ->orderBy('tbl_berita.id', 'desc')
-                ->limit(3)
-                ->get();
+                ->paginate(2);
            
         }
         
@@ -131,6 +130,7 @@ class BeritaController extends Controller
 
         return response()->json([
             'success' => true,
+            'last_page' => $data->lastPage(),
             'data'    => $arr
         ]);
     }

@@ -34,6 +34,7 @@ class UsersController extends Controller
         $users->jenis_kelamin = $request->gender;
         $users->nomor_telepon = $request->phoneNumber;
         $users->tgl_lahir = $request->dateBirth;
+        $users->date = $request->date;
         $users->save();
 
         return response()->json([

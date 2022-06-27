@@ -18,7 +18,8 @@ class TblUsers extends Migration
             $table->string('email');
             $table->string('nama_lengkap');
             $table->string('password');
-            $table->date('tgl_lahir')->nullable();
+            $table->string('tgl_lahir')->nullable();
+            $table->date('date')->nullable();
             $table->string('jenis_kelamin')->nullable();
             $table->string('nomor_telepon')->nullable();
             $table->string('foto')->nullable();

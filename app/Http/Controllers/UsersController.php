@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ModelUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class UsersController extends Controller
 {
@@ -35,6 +36,26 @@ class UsersController extends Controller
     }
 
     public function update(Request $request,$id){
+
+        $validate = Validator::make($request->all(),[
+            'gender'    => "required",
+            'dateBirth' => "required",
+            "phoneNumber"   => "required"
+        ],[
+            'gender.required' => "Jenis kelamin tidak boleh kosong",
+            'dateBirth.required' => "Tanggal lahir tidak boleh kosong",
+            "phoneNumber.required" => "Nomor telepon tidak boleh kosong"
+        ]);
+
+
+        if($validate->fails()){
+            return response()->json([
+                'status' => false,
+                'message'   => $validate->errors()->first()
+            ]);
+        }
+
+
         $users = ModelUsers::find($id);
         $users->jenis_kelamin = $request->gender;
         $users->nomor_telepon = $request->phoneNumber;

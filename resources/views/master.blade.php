@@ -93,8 +93,8 @@ use Illuminate\Support\Facades\Session;
     <aside class="main-sidebar elevation-4 sidebar-light-danger">
       <!-- Brand Logo -->
       <a href="index3.html" class="brand-link mb-3" style="margin-top:21px;">
-        <img src="{{ asset('logo.png') }}" alt="AdminLTE Logo" class="brand-image  " style="width: 50px; height:50px;">
-        <span class="brand-text font-weight-light">TV UPI</span>
+        <img src="{{ asset('logo.png') }}" alt="AdminLTE Logo" class="brand-image" style="width: 150px; ">
+        <span class="brand-text font-weight-light" style="color:#FFF;">.</span>
       </a>
 
       <!-- Sidebar -->

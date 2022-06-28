@@ -34,7 +34,7 @@
 		<div class="container-login100">
 			<div class="wrap-login100">
 				<div class="login100-pic js-tilt" data-tilt>
-					<img src="{{asset('login/logo.svg')}}" alt="IMG" class="size-logo">
+					<img src="{{asset('/logo.png')}}" alt="IMG" class="size-logo">
 				</div>
 
 				<form class="login100-form validate-form" method="post" action="/auth">

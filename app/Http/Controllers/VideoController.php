@@ -57,6 +57,8 @@ class VideoController extends Controller
             Storage::disk('uploads')->put('banner/'.$filename,File::get($imageBanner));
         }
 
+       
+
 
         // update banner to database
         $video->judul = $request->judul;

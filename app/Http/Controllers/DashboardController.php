@@ -26,6 +26,7 @@ class DashboardController extends Controller
     public function getVideo()
     {
         $dataVideo = DB::table('tbl_video')
+            ->select('tbl_video.*','tbl_kategori_video.nama_kategori')
             ->leftJoin('tbl_kategori_video', 'tbl_video.id_kategori', '=', 'tbl_kategori_video.id')
             ->get();
         $data['dataVideo'] = $dataVideo;

@@ -73,7 +73,7 @@ use Illuminate\Support\Facades\Session;
         <li class="nav-item dropdown">
           <a class="nav-link" data-toggle="dropdown" href="#" style="height: 0px !important;">
             <?php if (Session::get('dataUsers')->foto == null) { ?>
-              <img style="margin-top: -25px;border:3px solid #fff;height:50px;" class="img-size-50 img-circle" src="LOGO_TVUPI_PLAYSTORE_1.png" alt="">
+              <img style="margin-top: -25px;border:3px solid #fff;height:50px;" class="img-size-50 img-circle" src="{{asset('LOGO_TVUPI_PLAYSTORE_1.png')}}" alt="">
             <?php } else { ?>
               <img  style="margin-top: -25px;border:3px solid #fff;height:50px;" class="img-size-50 img-circle" src="{{asset('uploads/profile')}}/{{Session::get('dataUsers')->foto}}" alt="">
             <?php } ?>

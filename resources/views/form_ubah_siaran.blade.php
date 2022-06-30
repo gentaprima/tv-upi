@@ -62,7 +62,7 @@
                                 @foreach($siaran as $row)
                                 <tr>
                                     <td>{{$loop->iteration}}</td>
-                                    <td>{{$row->hari}}</td>
+                                    <td style="text-transform:capitalize">{{$row->hari}}</td>
                                     <td>{{$row->nama_siaran}}</td>
                                     <td>{{$row->waktu_mulai}}</td>
                                     <td>{{$row->waktu_selesai}}</td>
@@ -214,7 +214,7 @@
                 for (let i = 0; i < data.length; i++) {
                     var tr = $("<tr>");
                     tr.append("<td>" + k++ + "</td>");
-                    tr.append("<td>" + data[i].hari + "</td>");
+                    tr.append("<td style='text-transform:capitalize'>" + data[i].hari + "</td>");
                     tr.append("<td>" + data[i].nama_siaran + "</td>");
                     tr.append("<td>" + data[i].waktu_mulai + "</td>");
                     tr.append("<td>" + data[i].waktu_selesai + "</td>");

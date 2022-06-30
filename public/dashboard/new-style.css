@@ -153,3 +153,13 @@ background-color: #f8bb86 !important;
     border: none !important;
     border-radius: 10px !important;
 }
+
+.mcp-stream-online{
+    color: #5eff00;
+    font-weight: bold;
+}
+.mcp-stream-offline{
+    color: #DA251C;
+    font-weight: bold;
+}
+

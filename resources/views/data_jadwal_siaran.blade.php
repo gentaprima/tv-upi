@@ -57,7 +57,7 @@
                         @foreach ($dataJadwal as $jadwal)
                         <tr>
                             <td>{{$loop->iteration}}</td>
-                            <td>{{$jadwal->hari}}</td>
+                            <td style="text-transform: capitalize;">{{$jadwal->hari}}</td>
                             <td>
                                 <button type="button" onclick="showDetail(`{{$jadwal->hari}}`)" data-target="#modal-detail" data-toggle="modal" class="btn btn-secondary btn-sm"><i class="fa fa-eye"></i></button>
                                 <a href="/ubah-siaran/{{$jadwal->hari}}" class="btn btn-secondary btn-sm"><i class="fa fa-edit"></i></a>

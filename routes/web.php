@@ -60,6 +60,13 @@ Route::group(['middleware' => 'check.login', 'prefix' => '/'], function () {
     Route::get('/delete-jadwal-siaran/{id}', 'JadwalSiaranController@destroy');
     Route::get('/jadwal-siaran-show/{id}', 'JadwalSiaranController@show');
 
+    Route::get('/profile','DashboardController@profile');
+    Route::post('/update-profile/{id}/{form}','UsersController@updateProfile');
+    Route::get('/data-pengguna','DashboardController@dataUsers');
+    Route::post('/add-users','UsersController@addUsers');
+    Route::get('/delete-users/{id}','UsersController@destroy');
+    Route::get('/test','DashboardController@test');
+
     Route::get('/logout', function () {
         Session::flush();
         return redirect('/');

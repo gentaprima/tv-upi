@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Session;
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>@yield('title')</title>
-
+  <link rel="icon" type="image/x-icon" href="LOGO_TVUPI_PLAYSTORE_1.png" style="border-radius: 50%;">
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
@@ -36,6 +36,7 @@ use Illuminate\Support\Facades\Session;
   <link rel="stylesheet" href="{{ asset('dashboard/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
   <link rel="stylesheet" href="{{ asset('dashboard/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
 </head>
 
 <body class="sidebar-mini layout-fixed">
@@ -71,7 +72,12 @@ use Illuminate\Support\Facades\Session;
         <!-- Notifications Dropdown Menu -->
         <li class="nav-item dropdown">
           <a class="nav-link" data-toggle="dropdown" href="#" style="height: 0px !important;">
-            <img src="{{asset('login/logo.svg')}}" alt="User Avatar" style="margin-top: -25px;border:3px solid #fff;height:50px;" class="img-size-50 img-circle">
+            <?php if (Session::get('dataUsers')->foto == null) { ?>
+              <img style="margin-top: -25px;border:3px solid #fff;height:50px;" class="img-size-50 img-circle" src="LOGO_TVUPI_PLAYSTORE_1.png" alt="">
+            <?php } else { ?>
+              <img  style="margin-top: -25px;border:3px solid #fff;height:50px;" class="img-size-50 img-circle" src="{{asset('uploads/profile')}}/{{Session::get('dataUsers')->foto}}" alt="">
+            <?php } ?>
+            <!-- <img src="{{asset('LOGO_TVUPI_PLAYSTORE_1.png')}}" alt="User Avatar" style="margin-top: -25px;border:3px solid #fff;height:50px;" class="img-size-50 img-circle"> -->
           </a>
           <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="margin-top: 30px;">
             <div class="dropdown-divider"></div>
@@ -208,6 +214,16 @@ use Illuminate\Support\Facades\Session;
                 </p>
               </a>
             </li>
+            @php if(Session::get('dataUsers')->role == 1){ @endphp
+            <li class="nav-item">
+              <a href="/data-pengguna" class="nav-link {{ Request::is('data-pengguna')  ? 'active' : '' }}">
+                <i class="nav-icon fas fa-users"></i>
+                <p>
+                  Manajemen Pengguna
+                </p>
+              </a>
+            </li>
+            @php } @endphp
 
 
 
@@ -286,6 +302,7 @@ use Illuminate\Support\Facades\Session;
   <script src="{{asset('dashboard/plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
   <script src="{{asset('dashboard/plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
   <script src="{{asset('dashboard/plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
+  <script type="text/javascript" language="javascript" src="https://wms.klikhost.com:2000/dist/widgets.js" defer></script>
   <!-- <script src="sweetalert2.all.min.js"></script> -->
   <script>
     $(function() {
@@ -416,7 +433,7 @@ use Illuminate\Support\Facades\Session;
       let files = $('#imagePick')[0].files;
       let token = $("input[name='_token']").val();
       let urutan = $("input[name='urutan']").val()
-     let position =  $('select[name=position] option').filter(':selected').val()
+      let position = $('select[name=position] option').filter(':selected').val()
       let status = $("input[name='isActive']").val()
       let jenis = $("input[name='jenis']").val()
 
@@ -450,7 +467,7 @@ use Illuminate\Support\Facades\Session;
               title: response.message
             });
             $("#modal-form .close").click()
-           
+
           }
         }
       })

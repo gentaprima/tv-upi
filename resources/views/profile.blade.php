@@ -108,13 +108,27 @@ use Illuminate\Support\Facades\Session;
                     <div class="form-group row">
                         <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
                         <div class="col-sm-10">
-                            <input type="password" class="form-control" id="password" name="password" value="">
+                            <div class="input-group">
+                                <input type="password" style="border-top-right-radius: 0px !important;border-bottom-right-radius:0px !important;" class="form-control" id="password" name="password" value="">
+                                <div class="input-group-append">
+                                    <span onclick="seePassword()" class="input-group-text" id="basic-addon2"><i id="eyePassword" class="fa fa-eye-slash"></i></span>
+                                </div>
+                                <!-- <div class="input-group-append">
+                                    <span class="input-group-text">Upload</span>
+                                </div> -->
+                            </div>
+
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="inputPassword" class="col-sm-2 col-form-label">Konfirmasi Password</label>
                         <div class="col-sm-10">
-                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" value="">
+                            <div class="input-group">
+                                <input type="password"  style="border-top-right-radius: 0px !important;border-bottom-right-radius:0px !important;" class="form-control" id="confirmPassword" name="confirmPassword" value="">
+                                <div class="input-group-append">
+                                    <span onclick="seeConfirmPassword()" class="input-group-text" id="basic-addon2"><i id="eyeConfirmPassword" class="fa fa-eye-slash"></i></span>
+                                </div>
+                            </div>
                             <p id="labelPhoto" class="mt-1">(kosongkan jika tidak ingin mengubah password)</p>
                         </div>
                     </div>
@@ -131,6 +145,27 @@ use Illuminate\Support\Facades\Session;
 </div>
 
 <script>
+    function seePassword(){
+       let classEye = document.getElementById("eyePassword");
+       if(classEye.className == 'fa fa-eye'){
+          classEye.setAttribute('class','fa fa-eye-slash');
+          document.getElementById("password").type = "password";
+       }else{
+          document.getElementById("password").type = "text";
+          classEye.setAttribute('class','fa fa-eye');
+       }
 
+    }
+
+    function seeConfirmPassword(){
+        let classEye = document.getElementById("eyeConfirmPassword");
+       if(classEye.className == 'fa fa-eye'){
+          classEye.setAttribute('class','fa fa-eye-slash');
+          document.getElementById("confirmPassword").type = "password";
+       }else{
+          document.getElementById("confirmPassword").type = "text";
+          classEye.setAttribute('class','fa fa-eye');
+       }
+    }
 </script>
 @endsection

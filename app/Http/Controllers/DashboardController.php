@@ -53,6 +53,7 @@ class DashboardController extends Controller
     public function getBerita()
     {
         $dataBerita = DB::table('tbl_berita')
+            ->select('tbl_berita.*','tbl_kategori_berita.nama_kategori')
             ->leftJoin('tbl_kategori_berita', 'tbl_berita.id_kategori', '=', 'tbl_kategori_berita.id')
             ->get();
 

@@ -59,7 +59,7 @@
                         @foreach ($dataBerita as $berita)
                         <tr>
                             <td>{{$loop->iteration}}</td>
-                            <td>{{$berita->judul}}</td>
+                            <td style="width: 400px;">{{$berita->judul}}</td>
                             <td>{{$berita->tgl}}</td>
                             <td>{{$berita->nama_kategori}}</td>
                             <td>

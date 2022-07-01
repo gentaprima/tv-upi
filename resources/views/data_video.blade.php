@@ -61,7 +61,7 @@
                         @foreach($dataVideo as $row)
                         <tr>
                             <td>{{$loop->iteration}}</td>
-                            <td>{{$row->judul}}</td>
+                            <td style="width: 400px;">{{$row->judul}}</td>
                             <td>{{$row->link}}</td>
                             <td><img onclick="showImage('{{$row->banner}}',`{{asset('uploads/banner')}}`)" data-target="#modal-image" data-toggle="modal" style="width: 80px; height:80px;" src="{{asset('uploads/banner')}}/{{$row->banner}}" alt=""></td>
                             <td>{{$row->nama_kategori}}</td>

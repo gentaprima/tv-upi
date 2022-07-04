@@ -58,9 +58,15 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @php
+                        $iteration = 1;
+                        if($dataVideo->currentPage() > 1){
+                            $iteration = (($dataVideo->currentPage() * 10) - 10) +  1;
+                        }
+                        @endphp
                         @foreach($dataVideo as $row)
                         <tr>
-                            <td>{{$loop->iteration}}</td>
+                            <td>{{$iteration++}}</td>
                             <td style="width: 250px;">{{$row->judul}}</td>
                             <td>{{$row->link}}</td>
                             <td><img onclick="showImage('{{$row->banner}}',`{{asset('uploads/banner')}}`)" data-target="#modal-image" data-toggle="modal" style="width: 80px; height:80px;" src="{{asset('uploads/banner')}}/{{$row->banner}}" alt=""></td>

@@ -29,7 +29,8 @@ class DashboardController extends Controller
             ->select('tbl_video.*','tbl_kategori_video.nama_kategori')
             ->leftJoin('tbl_kategori_video', 'tbl_video.id_kategori', '=', 'tbl_kategori_video.id')
             ->orderBy('id','desc')
-            ->get();
+            ->paginate(10);
+
         $data['dataVideo'] = $dataVideo;
         $data['dataKategori'] = DB::table('tbl_kategori_video')->get();
         return view('data_video', $data);

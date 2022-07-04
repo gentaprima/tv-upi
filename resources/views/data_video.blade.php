@@ -45,7 +45,7 @@
                         </div>
                     </div>
                 </div>
-                <table class="table table-striped mt-2">
+                <table id="table" class="table table-striped mt-2">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -61,7 +61,7 @@
                         @foreach($dataVideo as $row)
                         <tr>
                             <td>{{$loop->iteration}}</td>
-                            <td style="width: 400px;">{{$row->judul}}</td>
+                            <td style="width: 250px;">{{$row->judul}}</td>
                             <td>{{$row->link}}</td>
                             <td><img onclick="showImage('{{$row->banner}}',`{{asset('uploads/banner')}}`)" data-target="#modal-image" data-toggle="modal" style="width: 80px; height:80px;" src="{{asset('uploads/banner')}}/{{$row->banner}}" alt=""></td>
                             <td>{{$row->nama_kategori}}</td>
@@ -83,6 +83,22 @@
                     </tbody>
 
                 </table>
+                <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                    <ul class="pagination">
+
+                        @php if($dataVideo->currentPage() == 1){ @endphp
+                        <li class="paginate_button next prev disabledd" id="example1_previous"><a href="#" aria-controls="example1" data-dt-idx="0" tabindex="0"><i class="fa fa-chevron-left"></i></a></li>
+                        @php }else{ @endphp
+                        <li class="paginate_button next prev " id="example1_previous"><a href="data-video?page={{$dataVideo->currentPage() -  1}}" aria-controls="example1" data-dt-idx="0" tabindex="0"><i class="fa fa-chevron-left"></i></a></li>
+                        @php } @endphp
+                        <li class="paginate_button active"><a href="#" aria-controls="example1" data-dt-idx="1" tabindex="0">{{$dataVideo->currentPage()}}</a></li>
+                        @php if($dataVideo->currentPage() == $dataVideo->lastPage()){ @endphp
+                        <li class="paginate_button next disabledd" id="example1_next"><a href="#" aria-controls="example1" data-dt-idx="2" tabindex="0"><i class="fa fa-chevron-right"></i></a></li>
+                        @php }else{ @endphp
+                        <li class="paginate_button next " id="example1_next"><a href="data-video?page={{$dataVideo->currentPage() +  1}} " aria-controls="example1" data-dt-idx="2" tabindex="0"><i class="fa fa-chevron-right"></i></a></li>
+                        @php } @endphp
+                    </ul>
+                </div>
             </div>
         </div><!-- /.container-fluid -->
     </section>
@@ -223,7 +239,7 @@
         document.getElementById("imageBanner").src = path + '/' + image;
     }
 
-    function updateData(id, judul, banner, kategori, is_active,link) {
+    function updateData(id, judul, banner, kategori, is_active, link) {
         document.getElementById("judul").value = judul;
         document.getElementById("link").value = link;
         document.getElementById("kategori").value = kategori;
@@ -240,8 +256,8 @@
         }
 
         let requiredImage = document.getElementById("imagePick");
-        requiredImage.removeAttribute('required','')
-        
+        requiredImage.removeAttribute('required', '')
+
     }
 
     function addData() {
@@ -255,7 +271,7 @@
         document.getElementById('radioStatus1').checked = false;
         document.getElementById('radioStatus2').checked = false;
         let requiredImage = document.getElementById("imagePick");
-        requiredImage.setAttribute('required','')
+        requiredImage.setAttribute('required', '')
     }
 
     function deleteData(id) {

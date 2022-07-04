@@ -224,7 +224,7 @@
   .paginate_button.next > a:hover{
     color : #FFF;
     cursor: pointer;    
-
+ 
   }
   
   .paginate_button.next > a:focus{

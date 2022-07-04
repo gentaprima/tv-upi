@@ -114,6 +114,12 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label for="inputPassword" class="col-sm-2 col-form-label">Tangal</label>
+                        <div class="col-sm-10">
+                            <input type="date" required class="form-control" placeholder="Tanggal" name="date" id="date"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label for="inputPassword" class="col-sm-2 col-form-label">Banner</label>
                         <div class="col-sm-10">
                             <div class="input-group">
@@ -238,6 +244,7 @@
                 let data = JSON.parse(response);
                 document.getElementById("judul").value = data.judul;
                 document.getElementById("kategoriBerita").value = data.id_kategori;
+                document.getElementById("date").value = data.tgl;
                 document.getElementById("tanggalDetail").innerHTML = data.tgl;
                 document.getElementById("deskripsi").innerHTML = data.deskripsi;
                 document.getElementById("labelNamePhoto").innerHTML = data.image;
@@ -277,6 +284,7 @@
         document.getElementById("kategoriBerita").value = "";
         document.getElementById("titleModal").innerHTML = 'Tambah Berita';
         document.getElementById("form").action = '/add-berita';
+        document.getElementById("date").value = "";
     }
 
     function deleteData(id) {

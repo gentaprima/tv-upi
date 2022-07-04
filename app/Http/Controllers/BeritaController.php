@@ -23,7 +23,7 @@ class BeritaController extends Controller
             'judul' => $request->judul,
             'id_kategori'   => $request->kategoriBerita,
             'deskripsi'     => $request->deskripsi,
-            'tgl'           => date('Y-m-d'),
+            'tgl'           => $request->date,
             'count_like'    => 0,
             'created_by'    => "Admin",
             'is_publish'    => $request->status,
@@ -39,7 +39,7 @@ class BeritaController extends Controller
         $berita = ModelBerita::find($id);
         $berita->judul = $request->judul;
         $berita->deskripsi = $request->deskripsi;
-        $berita->tgl = date('Y-m-d');
+        $berita->tgl = $request->date;
         $berita->id_kategori = $request->kategoriBerita;
         $berita->is_publish = $request->status;
         $berita->save();

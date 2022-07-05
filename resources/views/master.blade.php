@@ -37,6 +37,9 @@ use Illuminate\Support\Facades\Session;
   <link rel="stylesheet" href="{{ asset('dashboard/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
   <link rel="stylesheet" href="{{ asset('dashboard/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="{{asset('dashboard/plugins/jquery/jquery.min.js')}}"></script>
+  <!-- jQuery UI 1.11.4 -->
+  <script src="{{asset('dashboard/plugins/jquery-ui/jquery-ui.min.js')}}"></script>
   
 </head>
 
@@ -255,9 +258,7 @@ use Illuminate\Support\Facades\Session;
   <!-- ./wrapper -->
 
   <!-- jQuery -->
-  <script src="{{asset('dashboard/plugins/jquery/jquery.min.js')}}"></script>
-  <!-- jQuery UI 1.11.4 -->
-  <script src="{{asset('dashboard/plugins/jquery-ui/jquery-ui.min.js')}}"></script>
+  
   <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
   <script>
     $.widget.bridge('uibutton', $.ui.button)

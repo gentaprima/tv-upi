@@ -33,6 +33,7 @@ Route::group(['middleware' => 'check.login', 'prefix' => '/'], function () {
     Route::post('/add-video', 'VideoController@store');
     Route::post('/update-video/{id}', 'VideoController@update');
     Route::get('/delete-video/{id}', 'VideoController@destroy');
+    Route::get('/show-video-json','VideoController@getVideoJson');
 
     // iklan
     Route::get('/data-iklan/{id}', 'DashboardController@getIklan');
@@ -51,6 +52,7 @@ Route::group(['middleware' => 'check.login', 'prefix' => '/'], function () {
     Route::post('/update-berita/{id}', 'BeritaController@update');
     Route::get('/delete-berita/{id}', 'BeritaController@destroy');
     Route::get('/show-berita/{id}', 'BeritaController@show');
+    // Route::get('/show-data--berita-json','BeritaController@getBeritaJson');
 
     // jadwal siaran
     Route::get('/jadwal-siaran', 'DashboardController@jadwalSiaran');

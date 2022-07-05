@@ -269,6 +269,9 @@
     </div>
 </div>
 <script>
+
+ 
+
     function showImage(image, path) {
         document.getElementById("imageBanner").src = path + '/' + image;
     }

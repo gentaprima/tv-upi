@@ -90,6 +90,20 @@ class VideoController extends Controller
         return redirect()->back();
     }
 
+    public function getVideoJson(Request $request){
+        $dataVideo = DB::table('tbl_video')
+            ->select('tbl_video.*','tbl_kategori_video.nama_kategori')
+            ->leftJoin('tbl_kategori_video', 'tbl_video.id_kategori', '=', 'tbl_kategori_video.id')
+            ->orderBy('id','desc')
+            ->paginate(10);
+
+        return response()->json([
+            'status' => true,
+            'data' => $dataVideo,
+            'linkBanner' => asset('uploads/banner')
+        ]);
+    }
+
     // API
 
     public function addCount($id){

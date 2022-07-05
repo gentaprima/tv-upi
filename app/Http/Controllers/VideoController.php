@@ -39,7 +39,8 @@ class VideoController extends Controller
             'banner'  => $filename,
             'id_kategori'    => $request->kategori,
             'count'    => 0,
-            'is_active' => $request->isActive
+            'is_active' => $request->isActive,
+            'tgl'       => $request->date
         ]);
 
         Session::flash('message', 'Banner berhasil ditambahkan.'); 
@@ -69,6 +70,7 @@ class VideoController extends Controller
         $video->id_kategori = $request->kategori;
         $video->is_active = $request->isActive;
         $video->banner = $filename;
+        $video->tgl = $request->date;
         $video->save();
 
         Session::flash('message', 'Banner berhasil diperbarui.'); 

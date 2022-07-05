@@ -51,6 +51,7 @@
                             <th>No</th>
                             <th>Judul</th>
                             <th>Link</th>
+                            <th>Tanggal</th>
                             <th>Banner</th>
                             <th>Kategori</th>
                             <th>Status</th>
@@ -69,7 +70,8 @@
                             <td>{{$iteration++}}</td>
                             <td style="width: 250px;">{{$row->judul}}</td>
                             <td>{{$row->link}}</td>
-                            <td><img onclick="showImage('{{$row->banner}}',`{{asset('uploads/banner')}}`)" data-target="#modal-image" data-toggle="modal" style="width: 80px; height:80px;" src="{{asset('uploads/banner')}}/{{$row->banner}}" alt=""></td>
+                            <td>{{$row->tgl}}</td>
+                            <td><img onclick="showImage('{{$row->banner}}',`{{asset('uploads/banner')}}`)" data-target="#modal-image" data-toggle="modal" style="width: 143px; height:80px;" src="{{asset('uploads/banner')}}/{{$row->banner}}" alt=""></td>
                             <td>{{$row->nama_kategori}}</td>
                             <td>
                                 @php if($row->is_active == 1){ @endphp
@@ -79,7 +81,7 @@
                                 @php } @endphp
                             </td>
                             <td>
-                                <button onclick="updateData(`{{$row->id}}`,`{{$row->judul}}`,`{{$row->banner}}`,`{{$row->id_kategori}}`,`{{$row->is_active}}`,`{{$row->link}}`)" type="button" data-target="#modal-form" data-toggle="modal" class="btn btn-secondary btn-sm"><i class="fa fa-edit"></i></button>
+                                <button onclick="updateData(`{{$row->id}}`,`{{$row->judul}}`,`{{$row->banner}}`,`{{$row->id_kategori}}`,`{{$row->is_active}}`,`{{$row->link}}`,`{{$row->tgl}}`)" type="button" data-target="#modal-form" data-toggle="modal" class="btn btn-secondary btn-sm"><i class="fa fa-edit"></i></button>
                                 <button type="button" onclick="deleteData('{{$row->id}}')" data-target="#modal-delete" data-toggle="modal" class="btn btn-secondary btn-sm"><i class="fa fa-trash"></i></button>
                             </td>
                         </tr>
@@ -143,6 +145,12 @@
                                 <option value="{{$row->id}}">{{$row->nama_kategori}}</option>
                                 @endforeach
                             </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputPassword" class="col-sm-2 col-form-label">Tanggal</label>
+                        <div class="col-sm-10">
+                            <input type="date" required class="form-control" id="date" value="{{old('date')}}" name="date" placeholder="date">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -245,10 +253,11 @@
         document.getElementById("imageBanner").src = path + '/' + image;
     }
 
-    function updateData(id, judul, banner, kategori, is_active, link) {
+    function updateData(id, judul, banner, kategori, is_active, link,date) {
         document.getElementById("judul").value = judul;
         document.getElementById("link").value = link;
         document.getElementById("kategori").value = kategori;
+        document.getElementById("date").value = date;
         document.getElementById("labelNamePhoto").innerHTML = banner;
         document.getElementById("labelPhoto").hidden = false;
         document.getElementById("form").action = `/update-video/${id}`;
@@ -270,6 +279,7 @@
         document.getElementById("judul").value = "";
         document.getElementById("link").value = "";
         document.getElementById("kategori").value = "";
+        document.getElementById("date").value = "";
         document.getElementById("labelNamePhoto").innerHTML = '';
         document.getElementById("labelPhoto").hidden = true;
         document.getElementById("form").action = '/add-video';

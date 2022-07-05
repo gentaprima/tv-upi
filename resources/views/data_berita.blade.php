@@ -314,7 +314,7 @@
                     tr.append(` <td><img onclick="showImage('${data.data.data[i].image}','${data.linkBanner}')" data-target="#modal-image" data-toggle="modal" style="width: 143px; height:80px;" src="${data.linkBanner}/${data.data.data[i].image}" alt=""></td>`);
                     tr.append(`
                     <td>
-                    <button onclick="updateData('${data.data.data[i].id}','${data.data.data[i].judul}','${data.data.data[i].banner}','${data.data.data[i].id_kategori}','${data.data.data[i].is_active}','${data.data.data[i].link}','${data.data.data[i].tgl}')" type="button" data-target="#modal-form" data-toggle="modal" class="btn btn-secondary btn-sm"><i class="fa fa-edit"></i></button>
+                    <button onclick="updateData('${data.data.data[i].id}')" type="button" data-target="#modal-form" data-toggle="modal" class="btn btn-secondary btn-sm"><i class="fa fa-edit"></i></button>
                                 <button type="button" onclick="deleteData('${data.data.data[i].id}')" data-target="#modal-delete" data-toggle="modal" class="btn btn-secondary btn-sm"><i class="fa fa-trash"></i></button>
                     </td>`)
                     $("#table tbody").append(tr);

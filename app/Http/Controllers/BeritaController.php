@@ -89,6 +89,8 @@ class BeritaController extends Controller
             $dataBerita = DB::table('tbl_berita')
                 ->select('tbl_berita.*', 'tbl_kategori_berita.nama_kategori')
                 ->leftJoin('tbl_kategori_berita', 'tbl_berita.id_kategori', '=', 'tbl_kategori_berita.id')
+                ->where('judul','like','%'.$request->search.'%')
+                ->orWhere('nama_kategori','like','%'.$request->search.'%')
                 ->paginate(10);
         } else {
             $dataBerita = DB::table('tbl_berita')

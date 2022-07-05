@@ -38,7 +38,7 @@
                     </div>
                     <div class="col-6">
                         <div class="input-group mb-3 search">
-                            <input type="text" class="form-control" placeholder="Telusuri ..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+                            <input type="search" class="form-control" placeholder="Telusuri ..." id="search"  aria-label="Recipient's username" aria-describedby="basic-addon2">
                             <div class="input-group-append">
                                 <span class="input-group-text" id="basic-addon2"><i class="fa fa-search"></i></span>
                             </div>
@@ -70,7 +70,7 @@
                         <li class="ml-2" id="total_page"></li>
                         <li class="paginate_button next prev" id="example1_previous"><a href="#" aria-controls="example1" id="link_prev" data-dt-idx="0" tabindex="0"><i class="fa fa-chevron-left"></i></a></li>
                         <li class="paginate_button next" id="example1_next"><a id="link_next" href="" aria-controls="example1" data-dt-idx="2" tabindex="0"><i class="fa fa-chevron-right"></i></a></li>
-                       
+
                     </ul>
                 </div>
             </div>
@@ -215,17 +215,26 @@
         loadData(1);
     })
 
-    function loadData(page) {
+    $('input[type=search]').on('input', function() {
+        clearTimeout(this.delay);
+        this.delay = setTimeout(function() {
+            console.log(this.value);
+            /* call ajax request here */
+            loadData(1,this.value)
+        }.bind(this), 800);
+    });
+
+    function loadData(page,search = "") {
         $("#table tbody").empty();
         $.ajax({
             type: 'GET',
             dataType: 'json',
-            url: `/show-video-json?page=${page}`,
+            url: `/show-video-json?page=${page}&search=${search}`,
             success: function(response) {
                 let data = response;
                 let k = 1;
-                if(data.data.current_page > 1){
-                    k = ((data.data.current_page * 10) -10 ) + 1
+                if (data.data.current_page > 1) {
+                    k = ((data.data.current_page * 10) - 10) + 1
                 }
                 let linkBanner = data.data.linkBanner
 

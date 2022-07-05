@@ -91,11 +91,22 @@ class VideoController extends Controller
     }
 
     public function getVideoJson(Request $request){
-        $dataVideo = DB::table('tbl_video')
-            ->select('tbl_video.*','tbl_kategori_video.nama_kategori')
-            ->leftJoin('tbl_kategori_video', 'tbl_video.id_kategori', '=', 'tbl_kategori_video.id')
-            ->orderBy('id','desc')
-            ->paginate(10);
+        if($request->search != ''){
+
+            $dataVideo = DB::table('tbl_video')
+                ->select('tbl_video.*','tbl_kategori_video.nama_kategori')
+                ->leftJoin('tbl_kategori_video', 'tbl_video.id_kategori', '=', 'tbl_kategori_video.id')
+                ->where('judul','like','%'.$request->search.'%')
+                ->orWhere('nama_kategori','like','%'.$request->search.'%')
+                ->orderBy('id','desc')
+                ->paginate(10);
+        }else{
+            $dataVideo = DB::table('tbl_video')
+                ->select('tbl_video.*','tbl_kategori_video.nama_kategori')
+                ->leftJoin('tbl_kategori_video', 'tbl_video.id_kategori', '=', 'tbl_kategori_video.id')
+                ->orderBy('id','desc')
+                ->paginate(10);
+        }
 
         return response()->json([
             'status' => true,

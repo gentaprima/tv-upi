@@ -59,42 +59,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- @php
-                        $iteration = 1;
-                        if($dataVideo->currentPage() > 1){
-                        $iteration = (($dataVideo->currentPage() * 10) - 10) + 1;
-                        }
-                        @endphp
-                        @foreach($dataVideo as $row)
-                        <tr>
-                            <td>{{$iteration++}}</td>
-                            <td style="width: 250px;">{{$row->judul}}</td>
-                            <td>{{$row->link}}</td>
-                            <td>{{$row->tgl}}</td>
-                            <td><img onclick="showImage('{{$row->banner}}',`{{asset('uploads/banner')}}`)" data-target="#modal-image" data-toggle="modal" style="width: 143px; height:80px;" src="{{asset('uploads/banner')}}/{{$row->banner}}" alt=""></td>
-                            <td>{{$row->nama_kategori}}</td>
-                            <td>
-                                @php if($row->is_active == 1){ @endphp
-                                <span class="badge badge-success">Aktif</span>
-                                @php }else{ @endphp
-                                <span class="badge badge-danger">Tidak Aktif</span>
-                                @php } @endphp
-                            </td>
-                            <td>
-                                <button onclick="updateData(`{{$row->id}}`,`{{$row->judul}}`,`{{$row->banner}}`,`{{$row->id_kategori}}`,`{{$row->is_active}}`,`{{$row->link}}`,`{{$row->tgl}}`)" type="button" data-target="#modal-form" data-toggle="modal" class="btn btn-secondary btn-sm"><i class="fa fa-edit"></i></button>
-                                <button type="button" onclick="deleteData('{{$row->id}}')" data-target="#modal-delete" data-toggle="modal" class="btn btn-secondary btn-sm"><i class="fa fa-trash"></i></button>
-                            </td>
-                        </tr>
-
-                        @endforeach -->
-
                     </tbody>
 
                 </table>
                 <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
                     <ul class="pagination">
                         <li>Halaman</li>
-                        <li class="paginate_button active mr-2"><a href="#" aria-controls="example1" data-dt-idx="1" tabindex="0">1</a></li>
+                        <li class="paginate_button active mr-2"><a href="#" aria-controls="example1" id="current_page" data-dt-idx="1" tabindex="0">1</a></li>
                         <li>Dari</li>
                         <li class="ml-2" id="total_page"></li>
                         <li class="paginate_button next prev" id="example1_previous"><a href="#" aria-controls="example1" id="link_prev" data-dt-idx="0" tabindex="0"><i class="fa fa-chevron-left"></i></a></li>
@@ -280,6 +251,7 @@
                     buttonNext.setAttribute("onclick", `loadData(${data.data.current_page + 1})`)
                 }
 
+                document.getElementById("current_page").innerHTML = data.data.current_page
                 document.getElementById("total_page").innerHTML = data.data.last_page
 
                 // set pagination

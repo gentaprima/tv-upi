@@ -57,7 +57,7 @@ class DashboardController extends Controller
         $dataBerita = DB::table('tbl_berita')
             ->select('tbl_berita.*','tbl_kategori_berita.nama_kategori')
             ->leftJoin('tbl_kategori_berita', 'tbl_berita.id_kategori', '=', 'tbl_kategori_berita.id')
-            ->get();
+            ->paginate(10);
 
         $data['dataBerita'] = $dataBerita;
         $data['dataKategoriBerita'] = ModelKategoriBerita::all();

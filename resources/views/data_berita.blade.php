@@ -75,6 +75,22 @@
                     </tbody>
 
                 </table>
+                <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                    <ul class="pagination">
+
+                        @php if($dataBerita->currentPage() == 1){ @endphp
+                        <li class="paginate_button next prev disabledd" id="example1_previous"><a href="#" aria-controls="example1" data-dt-idx="0" tabindex="0"><i class="fa fa-chevron-left"></i></a></li>
+                        @php }else{ @endphp
+                        <li class="paginate_button next prev " id="example1_previous"><a href="data-video?page={{$dataBerita->currentPage() -  1}}" aria-controls="example1" data-dt-idx="0" tabindex="0"><i class="fa fa-chevron-left"></i></a></li>
+                        @php } @endphp
+                        <li class="paginate_button active"><a href="#" aria-controls="example1" data-dt-idx="1" tabindex="0">{{$dataBerita->currentPage()}}</a></li>
+                        @php if($dataBerita->currentPage() == $dataBerita->lastPage()){ @endphp
+                        <li class="paginate_button next disabledd" id="example1_next"><a href="#" aria-controls="example1" data-dt-idx="2" tabindex="0"><i class="fa fa-chevron-right"></i></a></li>
+                        @php }else{ @endphp
+                        <li class="paginate_button next " id="example1_next"><a href="data-video?page={{$dataBerita->currentPage() +  1}} " aria-controls="example1" data-dt-idx="2" tabindex="0"><i class="fa fa-chevron-right"></i></a></li>
+                        @php } @endphp
+                    </ul>
+                </div>
             </div>
         </div><!-- /.container-fluid -->
     </section>
@@ -253,7 +269,6 @@
     </div>
 </div>
 <script>
-
     function showImage(image, path) {
         document.getElementById("imageBanner").src = path + '/' + image;
     }

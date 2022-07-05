@@ -38,14 +38,14 @@
                     </div>
                     <div class="col-6">
                         <div class="input-group mb-3 search">
-                            <input type="text" class="form-control" placeholder="Telusuri ..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+                            <input type="search" class="form-control" placeholder="Telusuri ..." aria-label="Recipient's username" aria-describedby="basic-addon2">
                             <div class="input-group-append">
                                 <span class="input-group-text" id="basic-addon2"><i class="fa fa-search"></i></span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <table class="table table-striped mt-2">
+                <table id="table" class="table table-striped mt-2">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -57,38 +57,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($dataBerita as $berita)
-                        <tr>
-                            <td>{{$loop->iteration}}</td>
-                            <td style="width: 250px;">{{$berita->judul}}</td>
-                            <td>{{$berita->tgl}}</td>
-                            <td>{{$berita->nama_kategori}}</td>
-                            <td><img onclick="showImage('{{$berita->image}}',`{{asset('uploads/berita')}}`)" data-target="#modal-image" data-toggle="modal" style="width: 143px; height:80px;" src="{{asset('uploads/berita')}}/{{$berita->image}}" alt=""></td>
-                            <td>
-                                <button type="button" onclick="showDetail(`{{$berita->id}}`)" data-target="#modal-detail" data-toggle="modal" class="btn btn-secondary btn-sm"><i class="fa fa-eye"></i></button>
-                                <button type="button" onclick="updateData(`{{$berita->id}}`)" data-target="#modal-form" data-toggle="modal" class="btn btn-secondary btn-sm"><i class="fa fa-edit"></i></button>
-                                <button type="button" onclick="deleteData(`{{$berita->id}}`)" data-target="#modal-delete" data-toggle="modal" class="btn btn-secondary btn-sm"><i class="fa fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        @endforeach
+
 
                     </tbody>
 
                 </table>
                 <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
                     <ul class="pagination">
-
-                        @php if($dataBerita->currentPage() == 1){ @endphp
-                        <li class="paginate_button next prev disabledd" id="example1_previous"><a href="#" aria-controls="example1" data-dt-idx="0" tabindex="0"><i class="fa fa-chevron-left"></i></a></li>
-                        @php }else{ @endphp
-                        <li class="paginate_button next prev " id="example1_previous"><a href="data-video?page={{$dataBerita->currentPage() -  1}}" aria-controls="example1" data-dt-idx="0" tabindex="0"><i class="fa fa-chevron-left"></i></a></li>
-                        @php } @endphp
-                        <li class="paginate_button active"><a href="#" aria-controls="example1" data-dt-idx="1" tabindex="0">{{$dataBerita->currentPage()}}</a></li>
-                        @php if($dataBerita->currentPage() == $dataBerita->lastPage()){ @endphp
-                        <li class="paginate_button next disabledd" id="example1_next"><a href="#" aria-controls="example1" data-dt-idx="2" tabindex="0"><i class="fa fa-chevron-right"></i></a></li>
-                        @php }else{ @endphp
-                        <li class="paginate_button next " id="example1_next"><a href="data-video?page={{$dataBerita->currentPage() +  1}} " aria-controls="example1" data-dt-idx="2" tabindex="0"><i class="fa fa-chevron-right"></i></a></li>
-                        @php } @endphp
+                        <li>Halaman</li>
+                        <li class="paginate_button active mr-2"><a href="#" aria-controls="example1" id="current_page" data-dt-idx="1" tabindex="0">1</a></li>
+                        <li>Dari</li>
+                        <li class="ml-2" id="total_page"></li>
+                        <li class="paginate_button next prev" id="example1_previous"><a href="#" aria-controls="example1" id="link_prev" data-dt-idx="0" tabindex="0"><i class="fa fa-chevron-left"></i></a></li>
+                        <li class="paginate_button next" id="example1_next"><a id="link_next" href="" aria-controls="example1" data-dt-idx="2" tabindex="0"><i class="fa fa-chevron-right"></i></a></li>
                     </ul>
                 </div>
             </div>
@@ -269,8 +250,78 @@
     </div>
 </div>
 <script>
+    $(document).ready(function() {
+        loadData(1)
+    })
 
- 
+    $('input[type=search]').on('input', function() {
+        clearTimeout(this.delay);
+        this.delay = setTimeout(function() {
+            console.log(this.value);
+            /* call ajax request here */
+            loadData(1, this.value)
+        }.bind(this), 800);
+    });
+
+    function loadData(page, search = '') {
+        $("#table tbody").empty();
+        $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            url: `/show-berita-json?page=${page}&search=${search}`,
+            success: function(response) {
+                let data = response;
+                let k = 1;
+                if (data.data.current_page > 1) {
+                    k = ((data.data.current_page * 10) - 10) + 1
+                }
+                let linkBanner = data.data.linkBanner
+
+                // set pagination
+                let buttonPrev = document.getElementById("link_prev")
+                buttonPrev.href = "#"
+                if (data.data.current_page == 1) {
+                    $("#example1_previous").addClass("paginate_button next prev disabledd")
+                    buttonPrev.removeAttribute("onclick")
+                } else {
+                    $("#example1_previous").removeClass("disabledd")
+                    buttonPrev.setAttribute("onclick", `loadData(${data.data.current_page - 1})`)
+                }
+
+                let buttonNext = document.getElementById("link_next")
+                buttonNext.href = "#"
+                if (data.data.current_page == data.data.last_page) {
+                    $("#example1_next").addClass("paginate_button next prev disabledd")
+                    buttonNext.removeAttribute("onclick")
+                } else {
+                    buttonNext.setAttribute("onclick", ``)
+                    $("#example1_next").removeClass("disabledd")
+                    buttonNext.setAttribute("onclick", `loadData(${data.data.current_page + 1})`)
+                }
+
+                document.getElementById("current_page").innerHTML = data.data.current_page
+                document.getElementById("total_page").innerHTML = data.data.last_page
+
+                // set pagination
+
+
+                for (let i = 0; i < data.data.data.length; i++) {
+                    var tr = $("<tr>");
+                    tr.append("<td>" + k++ + "</td>");
+                    tr.append("<td style='width: 250px;'>" + data.data.data[i].judul + "</td>");
+                    tr.append("<td>" + data.data.data[i].tgl + "</td>");
+                    tr.append("<td>" + data.data.data[i].nama_kategori + "</td>");
+                    tr.append(` <td><img onclick="showImage('${data.data.data[i].image}','${data.linkBanner}')" data-target="#modal-image" data-toggle="modal" style="width: 143px; height:80px;" src="${data.linkBanner}/${data.data.data[i].image}" alt=""></td>`);
+                    tr.append(`
+                    <td>
+                    <button onclick="updateData('${data.data.data[i].id}','${data.data.data[i].judul}','${data.data.data[i].banner}','${data.data.data[i].id_kategori}','${data.data.data[i].is_active}','${data.data.data[i].link}','${data.data.data[i].tgl}')" type="button" data-target="#modal-form" data-toggle="modal" class="btn btn-secondary btn-sm"><i class="fa fa-edit"></i></button>
+                                <button type="button" onclick="deleteData('${data.data.data[i].id}')" data-target="#modal-delete" data-toggle="modal" class="btn btn-secondary btn-sm"><i class="fa fa-trash"></i></button>
+                    </td>`)
+                    $("#table tbody").append(tr);
+                }
+            }
+        })
+    }
 
     function showImage(image, path) {
         document.getElementById("imageBanner").src = path + '/' + image;

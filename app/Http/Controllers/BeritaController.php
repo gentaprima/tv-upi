@@ -39,12 +39,12 @@ class BeritaController extends Controller
         $berita = ModelBerita::find($id);
 
         $imageBanner = $request->file('image');
-        if($imageBanner == null){
+        if ($imageBanner == null) {
             $filename = $berita['image'];
-        }else{
+        } else {
 
             $filename = uniqid() . time() . "."  . explode("/", $imageBanner->getMimeType())[1];
-            Storage::disk('uploads')->put('berita/'.$filename,File::get($imageBanner));
+            Storage::disk('uploads')->put('berita/' . $filename, File::get($imageBanner));
         }
 
 
@@ -82,6 +82,28 @@ class BeritaController extends Controller
         );
     }
 
+    public function getBeritaJson(Request $request)
+    {
+        if ($request->search != '') {
+
+            $dataBerita = DB::table('tbl_berita')
+                ->select('tbl_berita.*', 'tbl_kategori_berita.nama_kategori')
+                ->leftJoin('tbl_kategori_berita', 'tbl_berita.id_kategori', '=', 'tbl_kategori_berita.id')
+                ->paginate(10);
+        } else {
+            $dataBerita = DB::table('tbl_berita')
+                ->select('tbl_berita.*', 'tbl_kategori_berita.nama_kategori')
+                ->leftJoin('tbl_kategori_berita', 'tbl_berita.id_kategori', '=', 'tbl_kategori_berita.id')
+                ->paginate(10);
+        }
+
+        return response()->json([
+            'status' => true,
+            'data' => $dataBerita,
+            'linkBanner' => asset('uploads/berita')
+        ]);
+    }
+
     // API
 
     public function getLatestNews(Request $request)
@@ -92,12 +114,11 @@ class BeritaController extends Controller
             ->orderBy('tbl_berita.id', 'desc')
             ->first();
 
-        $ceklike = DB::table('tbl_berita_like')->where('id_berita','=',$data->id)->where('id_users','=',$request->idUsers)->first();
-        if($ceklike != null){
+        $ceklike = DB::table('tbl_berita_like')->where('id_berita', '=', $data->id)->where('id_users', '=', $request->idUsers)->first();
+        if ($ceklike != null) {
             $data->like = true;
-        }else{
+        } else {
             $data->like = false;
-
         }
 
         return response()->json([
@@ -123,22 +144,21 @@ class BeritaController extends Controller
                 ->where('is_publish', '=', 1)
                 ->orderBy('tbl_berita.id', 'desc')
                 ->paginate(3);
-           
         }
-        
+
         $arr = [];
-        foreach($data as $dt){
+        foreach ($data as $dt) {
             $idBerita = $dt->id;
-            $ceklike = DB::table('tbl_berita_like')->where('id_berita','=',$idBerita)->where('id_users','=',$request->idUsers)->first();
-            if($ceklike != null){
+            $ceklike = DB::table('tbl_berita_like')->where('id_berita', '=', $idBerita)->where('id_users', '=', $request->idUsers)->first();
+            if ($ceklike != null) {
                 $dt->like = true;
-            }else{
+            } else {
                 $dt->like = false;
             }
 
-            array_push($arr,$dt);
+            array_push($arr, $dt);
         }
-        
+
 
         return response()->json([
             'success' => true,

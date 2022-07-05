@@ -37,11 +37,23 @@ class BeritaController extends Controller
     public function update(Request $request, $id)
     {
         $berita = ModelBerita::find($id);
+
+        $imageBanner = $request->file('image');
+        if($imageBanner == null){
+            $filename = $berita['image'];
+        }else{
+
+            $filename = uniqid() . time() . "."  . explode("/", $imageBanner->getMimeType())[1];
+            Storage::disk('uploads')->put('berita/'.$filename,File::get($imageBanner));
+        }
+
+
         $berita->judul = $request->judul;
         $berita->deskripsi = $request->deskripsi;
         $berita->tgl = $request->date;
         $berita->id_kategori = $request->kategoriBerita;
         $berita->is_publish = $request->status;
+        $berita->image  = $filename;
         $berita->save();
 
         Session::flash('message', 'Berita berhasil diperbarui.');

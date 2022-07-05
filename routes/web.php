@@ -49,7 +49,7 @@ Route::group(['middleware' => 'check.login', 'prefix' => '/'], function () {
     Route::get('/data-berita', 'DashboardController@getBerita');
     Route::post('/add-berita', 'BeritaController@store');
     Route::post('/update-berita/{id}', 'BeritaController@update');
-    Route::post('/delete-berita/{id}', 'BeritaController@destroy');
+    Route::get('/delete-berita/{id}', 'BeritaController@destroy');
     Route::get('/show-berita/{id}', 'BeritaController@show');
 
     // jadwal siaran

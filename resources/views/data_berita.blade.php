@@ -52,6 +52,7 @@
                             <th>Judul</th>
                             <th>Tanggal</th>
                             <th>Kategori</th>
+                            <th>Banner</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -59,9 +60,10 @@
                         @foreach ($dataBerita as $berita)
                         <tr>
                             <td>{{$loop->iteration}}</td>
-                            <td style="width: 400px;">{{$berita->judul}}</td>
+                            <td style="width: 250px;">{{$berita->judul}}</td>
                             <td>{{$berita->tgl}}</td>
                             <td>{{$berita->nama_kategori}}</td>
+                            <td><img onclick="showImage('{{$berita->image}}',`{{asset('uploads/berita')}}`)" data-target="#modal-image" data-toggle="modal" style="width: 143px; height:80px;" src="{{asset('uploads/berita')}}/{{$berita->image}}" alt=""></td>
                             <td>
                                 <button type="button" onclick="showDetail(`{{$berita->id}}`)" data-target="#modal-detail" data-toggle="modal" class="btn btn-secondary btn-sm"><i class="fa fa-eye"></i></button>
                                 <button type="button" onclick="updateData(`{{$berita->id}}`)" data-target="#modal-form" data-toggle="modal" class="btn btn-secondary btn-sm"><i class="fa fa-edit"></i></button>
@@ -116,7 +118,7 @@
                     <div class="form-group row">
                         <label for="inputPassword" class="col-sm-2 col-form-label">Tangal</label>
                         <div class="col-sm-10">
-                            <input type="date" required class="form-control" placeholder="Tanggal" name="date" id="date"/>
+                            <input type="date" required class="form-control" placeholder="Tanggal" name="date" id="date" />
                         </div>
                     </div>
                     <div class="form-group row">
@@ -230,12 +232,38 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modal-image" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content rounded">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Banner</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img src="" style="width: 100%;border-radius:8px;" id="imageBanner" alt="">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Keluar</button>
+                </form>
+            </div>
+            <div class="bg-red rounded-modal" style="color: red;height:15px;"></div>
+        </div>
+    </div>
+</div>
 <script>
+
+    function showImage(image, path) {
+        document.getElementById("imageBanner").src = path + '/' + image;
+    }
+
+
     function updateData(id) {
         document.getElementById("titleModal").innerHTML = 'Perbarui Berita';
         document.getElementById("form").action = `/update-berita/${id}`;
         let requiredImage = document.getElementById("imagePick");
-        requiredImage.removeAttribute('required','')
+        requiredImage.removeAttribute('required', '')
         $.ajax({
             type: 'get',
             dataType: 'html',
@@ -280,7 +308,7 @@
 
     function addData() {
         let requiredImage = document.getElementById("imagePick");
-        requiredImage.setAttribute('required','')
+        requiredImage.setAttribute('required', '')
         document.getElementById("kategoriBerita").value = "";
         document.getElementById("titleModal").innerHTML = 'Tambah Berita';
         document.getElementById("form").action = '/add-berita';
@@ -288,7 +316,7 @@
     }
 
     function deleteData(id) {
-        document.getElementById("btnDelete").href = `/delete-kategori-berita/${id}`;
+        document.getElementById("btnDelete").href = `/delete-berita/${id}`;
     }
 </script>
 @endsection

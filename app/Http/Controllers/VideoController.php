@@ -98,6 +98,7 @@ class VideoController extends Controller
                 ->leftJoin('tbl_kategori_video', 'tbl_video.id_kategori', '=', 'tbl_kategori_video.id')
                 ->where('judul','like','%'.$request->search.'%')
                 ->orWhere('nama_kategori','like','%'.$request->search.'%')
+                ->orWhere('tgl','like','%'.$request->search.'%')
                 ->orderBy('id','desc')
                 ->paginate(10);
         }else{
@@ -130,6 +131,7 @@ class VideoController extends Controller
 
     public function getVideoSelection(){
         $data = DB::table('tbl_video')
+                    ->where('is_active',1)
                     ->orderBy('count','desc')
                     ->limit(3)
                     ->get();

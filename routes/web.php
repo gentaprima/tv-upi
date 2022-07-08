@@ -27,6 +27,7 @@ Route::group(['middleware' => 'check.login', 'prefix' => '/'], function () {
     Route::post('/add-banner', 'BannerController@store');
     Route::post('/update-banner/{id}', 'BannerController@update');
     Route::get('/delete-banner/{id}', 'BannerController@destroy');
+    Route::get('/show-banner-json','BannerController@getBannerJson');
 
     // video
     Route::get('/data-video', 'DashboardController@getVideo');

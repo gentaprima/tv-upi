@@ -11,10 +11,11 @@ use Illuminate\Support\Facades\Storage;
 
 class BannerController extends Controller
 {
-    public function getBanner(){
+    public function getBanner()
+    {
         $dataBanner = DB::table('tbl_banner')
-                            ->where('is_active',1)
-                            ->orderBy('urutan','asc')->get();
+            ->where('is_active', 1)
+            ->orderBy('urutan', 'asc')->get();
 
         return response()->json([
             'success' => true,
@@ -22,11 +23,12 @@ class BannerController extends Controller
         ]);
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         //Upload File
         $imageBanner = $request->file('image');
         $filename = uniqid() . time() . "."  . explode("/", $imageBanner->getMimeType())[1];
-        Storage::disk('uploads')->put('banner/'.$filename,File::get($imageBanner));
+        Storage::disk('uploads')->put('banner/' . $filename, File::get($imageBanner));
 
         // add banner to database
         ModelBanner::create([
@@ -37,23 +39,24 @@ class BannerController extends Controller
             'is_active' => $request->isActive
         ]);
 
-        Session::flash('message', 'Banner berhasil ditambahkan.'); 
+        Session::flash('message', 'Banner berhasil ditambahkan.');
         Session::flash('icon', 'success');
         return redirect()->back()
-                            ->withInput($request->input());
+            ->withInput($request->input());
     }
 
 
-    public function update(Request $request,$id){
+    public function update(Request $request, $id)
+    {
         //Upload File
         $imageBanner = $request->file('image');
         $banner = ModelBanner::find($id);
-        if($imageBanner == null){
+        if ($imageBanner == null) {
             $filename = $banner['path_url'];
-        }else{
+        } else {
 
             $filename = uniqid() . time() . "."  . explode("/", $imageBanner->getMimeType())[1];
-            Storage::disk('uploads')->put('banner/'.$filename,File::get($imageBanner));
+            Storage::disk('uploads')->put('banner/' . $filename, File::get($imageBanner));
         }
 
 
@@ -65,21 +68,63 @@ class BannerController extends Controller
         $banner->path_url = $filename;
         $banner->save();
 
-        Session::flash('message', 'Banner berhasil diperbarui.'); 
+        Session::flash('message', 'Banner berhasil diperbarui.');
         Session::flash('icon', 'success');
         return redirect()->back()
-                            ->withInput($request->input());
+            ->withInput($request->input());
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         $banner = ModelBanner::find($id);
-        $fileName = public_path().'/uploads/banner/'.$banner['path_url'];
+        $fileName = public_path() . '/uploads/banner/' . $banner['path_url'];
         unlink($fileName);
 
         $banner->delete();
-        Session::flash('message', 'Banner berhasil dihapus.'); 
+        Session::flash('message', 'Banner berhasil dihapus.');
         Session::flash('icon', 'success');
         return redirect()->back();
-                            
+    }
+
+    public function getBannerJson(Request $request)
+    {
+
+        if ($request->search != '') {
+            if (preg_match("/{$request->search}/i", "aktif") || preg_match("/{$request->search}/i", "tidak aktif")) {
+                if (preg_match("/{$request->search}/i", "aktif")) {
+                    $isActive = 1;
+                } else if (preg_match("/{$request->search}/i", "tidak aktif")) {
+                    $isActive = 0;
+                }
+
+                $dataBanner = DB::table('tbl_banner')
+                    ->where('is_active', $isActive)
+                    ->paginate(10);
+            } else if (preg_match("/{$request->search}/i", "iklan") || preg_match("/{$request->search}/i", "bukan iklan")) {
+                if (preg_match("/{$request->search}/i", "iklan")) {
+                    $isAds = 1;
+                } else if (preg_match("/{$request->search}/i", "bukan iklan")) {
+                    $isAds = 0;
+                }
+
+                $dataBanner = DB::table('tbl_banner')
+                    ->where('is_active', $isAds)
+                    ->paginate(10);
+            } else {
+                $dataBanner = DB::table('tbl_banner')
+                    ->where('judul', 'like', '%' . $request->search . '%')
+                    ->orWhere('urutan', 'like', '%' . $request->search . '%')
+                    ->paginate(10);
+            }
+        } else {
+            $dataBanner = DB::table('tbl_banner')
+                          ->paginate(10);
+        }
+
+        return response()->json([
+            'success'   => true,
+            'data'      => $dataBanner,
+            'linkBanner'    => asset('uploads/banner')
+        ]);
     }
 }

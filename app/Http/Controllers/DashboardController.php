@@ -40,6 +40,7 @@ class DashboardController extends Controller
     {
         $dataAds = DB::table('tbl_ads')
             ->where('jenis', $id)
+            ->orderBy('id','desc')
             ->get();
         $data['dataAds'] = $dataAds;
         $data['jenis'] = $id;

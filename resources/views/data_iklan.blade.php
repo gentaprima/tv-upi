@@ -38,14 +38,15 @@
                     </div>
                     <div class="col-6">
                         <div class="input-group mb-3 search">
-                            <input type="text" class="form-control" placeholder="Telusuri ..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+                            <input type="search" class="form-control" placeholder="Telusuri ..." aria-label="Recipient's username" aria-describedby="basic-addon2">
                             <div class="input-group-append">
                                 <span class="input-group-text" id="basic-addon2"><i class="fa fa-search"></i></span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <table class="table table-striped mt-2">
+                <p hidden="true" id="jenis">{{$jenis}}</p>
+                <table id="table" class="table table-striped mt-2">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -59,42 +60,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($dataAds as $row)
-                        <tr>
-                            <td>{{$loop->iteration}}</td>
-                            <td><img onclick="showImage('{{$row->image}}',`{{asset('uploads/ads')}}`)" data-target="#modal-image" data-toggle="modal" style="width: 143px; height:80px;" src="{{asset('uploads/ads')}}/{{$row->image}}" alt=""></td>
-                            <td>{{$row->urutan}}</td>
-                            @php if($jenis == "beranda"){ @endphp
-                            <td>
-                                @php if($row->position == 1){ @endphp
-                                <span class="badge badge-primary">TOP</span>
-                                @php }else if($row->position == 2){@endphp
-                                <span class="badge badge-primary">CENTER</span>
-                                @php }else{@endphp
-                                <span class="badge badge-primary">BOTTOM</span>
-                                @php }@endphp
-                            </td>
-                            @php } @endphp
-                            <td>
-                                @php if($row->is_active == 1){ @endphp
-                                <span class="badge badge-success">Aktif</span>
-                                @php }else{ @endphp
-                                <span class="badge badge-danger">Tidak Aktif</span>
-                                @php } @endphp
-                            </td>
-                            <td>
-                                <button onclick="updateData(`{{$row->id}}`,`{{$row->image}}`,`{{$row->urutan}}`,`{{$row->jenis}}`,`{{$row->is_active}}`,`{{$row->position}}`)" type="button" data-target="#modal-form" data-toggle="modal" class="btn btn-secondary btn-sm"><i class="fa fa-edit"></i></button>
-                                @php if($row->is_default == 0){ @endphp
-                                <button type="button" onclick="deleteData('{{$row->id}}')" data-target="#modal-delete" data-toggle="modal" class="btn btn-secondary btn-sm"><i class="fa fa-trash"></i></button>
-                                @php } @endphp
-                            </td>
-                        </tr>
-
-                        @endforeach
-
                     </tbody>
+                   
+                </div>
 
                 </table>
+                <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                    <ul class="pagination">
+                        <li>Halaman</li>
+                        <li class="paginate_button active mr-2"><a href="#" aria-controls="example1" id="current_page" data-dt-idx="1" tabindex="0">1</a></li>
+                        <li>Dari</li>
+                        <li class="ml-2" id="total_page"></li>
+                        <li class="paginate_button next prev" id="example1_previous"><a href="#" aria-controls="example1" id="link_prev" data-dt-idx="0" tabindex="0"><i class="fa fa-chevron-left"></i></a></li>
+                        <li class="paginate_button next" id="example1_next"><a id="link_next" href="" aria-controls="example1" data-dt-idx="2" tabindex="0"><i class="fa fa-chevron-right"></i></a></li>
+                    </ul>
             </div>
         </div><!-- /.container-fluid -->
     </section>
@@ -213,7 +192,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <img src="" style="width: 100%;border-radius:8px;" id="imageBanner" alt="">
+                <img src="" style="width: 100%;height:300px;border-radius:8px;" id="imageBanner" alt="">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Keluar</button>
@@ -224,6 +203,97 @@
     </div>
 </div>
 <script>
+
+    $(document).ready(function() {
+        loadData(1)
+    })
+
+    $('input[type=search]').on('input', function() {
+        clearTimeout(this.delay);
+        this.delay = setTimeout(function() {
+            /* call ajax request here */
+            loadData(1, this.value)
+        }.bind(this), 800);
+    });
+
+    function loadData(page, search = "") {
+        let jenis = document.getElementById("jenis").innerHTML
+        $("#table tbody").empty();
+        $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            url: `/show-ads-json/${jenis}?page=${page}&search=${search}`,
+            success: function(response) {
+                let data = response;
+                let k = 1;
+                if (data.data.current_page > 1) {
+                    k = ((data.data.current_page * 10) - 10) + 1
+                }
+                let linkBanner = data.data.linkBanner
+
+                // set pagination
+                let buttonPrev = document.getElementById("link_prev")
+                buttonPrev.href = "#"
+                if (data.data.current_page == 1) {
+                    $("#example1_previous").addClass("paginate_button next prev disabledd")
+                    buttonPrev.removeAttribute("onclick")
+                } else {
+                    $("#example1_previous").removeClass("disabledd")
+                    buttonPrev.setAttribute("onclick", `loadData(${data.data.current_page - 1})`)
+                }
+
+                let buttonNext = document.getElementById("link_next")
+                buttonNext.href = "#"
+                if (data.data.current_page == data.data.last_page) {
+                    $("#example1_next").addClass("paginate_button next prev disabledd")
+                    buttonNext.removeAttribute("onclick")
+                } else {
+                    buttonNext.setAttribute("onclick", ``)
+                    $("#example1_next").removeClass("disabledd")
+                    buttonNext.setAttribute("onclick", `loadData(${data.data.current_page + 1})`)
+                }
+
+                document.getElementById("current_page").innerHTML = data.data.current_page
+                document.getElementById("total_page").innerHTML = data.data.last_page
+
+                // set pagination
+
+
+                for (let i = 0; i < data.data.data.length; i++) {
+                    var tr = $("<tr>");
+                    tr.append("<td>" + k++ + "</td>");
+                    tr.append(` <td><img onclick="showImage('${data.data.data[i].image}','${data.linkBanner}')" data-target="#modal-image" data-toggle="modal" style="width: 143px; height:80px;" src="${data.linkBanner}/${data.data.data[i].image}" alt=""></td>`);
+                    
+                    tr.append("<td>" + data.data.data[i].urutan + "</td>");
+                    if(jenis == "beranda"){
+                        if(data.data.data[i].position == 1){
+
+                            tr.append("<td> <span class='badge badge-primary'>TOP</span></td>");
+                        }else if(data.data.data[i].position == 2){
+                            tr.append("<td> <span class='badge badge-primary'>CENTER</span></td>");
+                        
+                        }else{
+                            tr.append("<td> <span class='badge badge-primary'>BOTTOM</span></td>");
+
+                        }
+                    }
+                    if (data.data.data[i].is_active == 1) {
+                        tr.append("<td> <span class='badge badge-success'>Aktif</span></td>");
+
+                    } else {
+                        tr.append("<td> <span class='badge badge-danger'>Tidak Aktif</span></td>");
+                    }
+                    tr.append(`
+                    <td>
+                    <button onclick="updateData('${data.data.data[i].id}','${data.data.data[i].image}','${data.data.data[i].urutan}','${data.data.data[i].jenis}','${data.data.data[i].is_active}','${data.data.data[i].position}')" type="button" data-target="#modal-form" data-toggle="modal" class="btn btn-secondary btn-sm"><i class="fa fa-edit"></i></button>
+                                <button type="button" onclick="deleteData('${data.data.data[i].id}')" data-target="#modal-delete" data-toggle="modal" class="btn btn-secondary btn-sm"><i class="fa fa-trash"></i></button>
+                    </td>`)
+                    $("#table tbody").append(tr);
+                }
+            }
+        })
+    }
+
     function checkAds(val) {}
 
     function showImage(image, path) {

@@ -150,6 +150,57 @@ class AdsController extends Controller
         return redirect()->back();
     }
 
+    public function getAdsJson(Request $request, $id)
+    {
+        if ($request->search != '') {
+            if (preg_match("/{$request->search}/i", "top") || preg_match("/{$request->search}/i", "center") || preg_match("/{$request->search}/i", "bottom")) {
+                if (preg_match("/{$request->search}/i", "top")) {
+                    $position = 1;
+                } else if (preg_match("/{$request->search}/i", "center")) {
+                    $position = 2;
+                } else if (preg_match("/{$request->search}/i", "bottom")) {
+                    $position = 3;
+                }
+                $dataAds = DB::table('tbl_ads')
+                    ->where('jenis', $id)
+                    ->where('position', $position)
+                    ->orderBy('id', 'desc')
+                    ->paginate(10);
+            }else if(preg_match("/{$request->search}/i", "aktif") || preg_match("/{$request->search}/i", "tidak aktif")){
+                if(preg_match("/{$request->search}/i", "aktif")){
+                    $isActive = 1;
+                }else if(preg_match("/{$request->search}/i", "tidak aktif")){
+                    $isActive = 0;
+                }
+                $dataAds = DB::table('tbl_ads')
+                    ->where('jenis', $id)
+                    ->where('is_active',$isActive)
+                    ->orderBy('id', 'desc')
+                    ->paginate(10);
+            }else{
+                $dataAds = DB::table('tbl_ads')
+                ->where('jenis', $id)
+                ->where('urutan', 'like', '%' . $request->search . '%')
+                ->orderBy('id', 'desc')
+                ->paginate(10);
+            }
+        }else{
+
+            $dataAds = DB::table('tbl_ads')
+                ->where('jenis', $id)
+                ->where('urutan', 'like', '%' . $request->search . '%')
+                ->orderBy('id', 'desc')
+                ->paginate(10);
+        }
+
+
+        return response()->json([
+            'success'   => true,
+            'data'      => $dataAds,
+            'linkBanner' => asset('uploads/ads')
+        ]);
+    }
+
     // API
 
     public function getAds($jenis)
@@ -157,6 +208,7 @@ class AdsController extends Controller
         $data = DB::table('tbl_ads')
             ->where('jenis', '=', $jenis)
             ->where('is_default', '=', null)
+            ->where('is_active',1)
             ->orderBy('urutan')
             ->get();
 
@@ -180,16 +232,17 @@ class AdsController extends Controller
             ->where('jenis', '=', $jenis)
             ->where('position', '=', $position)
             ->where('is_default', '=', null)
+            ->where('is_active',1)
             ->orderBy('urutan')
             ->get();
-        
-        if(count($data) == 0){
+
+        if (count($data) == 0) {
             $data =  DB::table('tbl_ads')
-                    ->where('jenis', '=', $jenis)
-                    ->where('position', '=', $position)
-                    ->where('is_default', '=', 1)
-                    ->orderBy('urutan')
-                    ->get();
+                ->where('jenis', '=', $jenis)
+                ->where('position', '=', $position)
+                ->where('is_default', '=', 1)
+                ->orderBy('urutan')
+                ->get();
         }
 
         return response()->json([

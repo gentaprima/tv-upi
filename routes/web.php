@@ -41,6 +41,7 @@ Route::group(['middleware' => 'check.login', 'prefix' => '/'], function () {
     Route::post('/add-new-ads', 'AdsController@addData');
     Route::post('/update-ads/{id}', 'AdsController@update');
     Route::get('/delete-ads/{id}', 'AdsController@destroy');
+    Route::get('/show-ads-json/{id}','AdsController@getAdsJson');
 
     // berita & kategori
     Route::get('/data-kategori-berita', 'DashboardController@getKategoriBerita');

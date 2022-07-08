@@ -38,11 +38,11 @@
                     </div>
                     <div class="col-6">
                         <div class="input-group mb-3 search">
-                            <input type="text" class="form-control" placeholder="Telusuri ..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+                            <!-- <input type="text" class="form-control" placeholder="Telusuri ..." aria-label="Recipient's username" aria-describedby="basic-addon2">
                             <div class="input-group-append">
                                 <span class="input-group-text" id="basic-addon2"><i class="fa fa-search"></i></span>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <table class="table table-striped mt-2">
